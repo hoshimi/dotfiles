@@ -1,59 +1,61 @@
-"V‚µ‚¢s‚ÌƒCƒ“ƒfƒ“ƒg‚ğŒ»İs‚Æ“¯‚¶‚É‚·‚é
+"ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ã‚’utf-8ã«
+set encoding=UTF-8
+"æ–°ã—ã„è¡Œã®ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚’ç¾åœ¨è¡Œã¨åŒã˜ã«ã™ã‚‹
 set autoindent
-"ƒoƒbƒNƒAƒbƒvƒtƒ@ƒCƒ‹‚ğì‚éƒfƒBƒŒƒNƒgƒŠ
+"ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 set backupdir=$HOME/vimbackup
-"ƒtƒ@ƒCƒ‹•Û‘¶ƒ_ƒCƒAƒƒO‚Ì‰ŠúƒfƒBƒŒƒNƒgƒŠ‚ğƒoƒbƒtƒ@ƒtƒ@ƒCƒ‹ˆÊ’u‚Éİ’è
+"ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®åˆæœŸãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ãƒãƒƒãƒ•ã‚¡ãƒ•ã‚¡ã‚¤ãƒ«ä½ç½®ã«è¨­å®š
 set browsedir=buffer 
-"ƒNƒŠƒbƒvƒ{[ƒh‚ğWindows‚Æ˜AŒg
+"ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã‚’Windowsã¨é€£æº
 set clipboard=unnamed
-"ViŒİŠ·‚ğƒIƒt
+"Viäº’æ›ã‚’ã‚ªãƒ•
 set nocompatible
-"ƒXƒƒbƒvƒtƒ@ƒCƒ‹—p‚ÌƒfƒBƒŒƒNƒgƒŠ
+"ã‚¹ãƒ¯ãƒƒãƒ—ãƒ•ã‚¡ã‚¤ãƒ«ç”¨ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 set directory=$HOME/vimbackup
-"ƒ^ƒu‚Ì‘ã‚í‚è‚É‹ó”’•¶š‚ğ‘}“ü‚·‚é
+"ã‚¿ãƒ–ã®ä»£ã‚ã‚Šã«ç©ºç™½æ–‡å­—ã‚’æŒ¿å…¥ã™ã‚‹
 set expandtab
-"•ÏX’†‚Ìƒtƒ@ƒCƒ‹‚Å‚àA•Û‘¶‚µ‚È‚¢‚Å‘¼‚Ìƒtƒ@ƒCƒ‹‚ğ•\¦
+"å¤‰æ›´ä¸­ã®ãƒ•ã‚¡ã‚¤ãƒ«ã§ã‚‚ã€ä¿å­˜ã—ãªã„ã§ä»–ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’è¡¨ç¤º
 set hidden
-"ƒCƒ“ƒNƒŠƒƒ“ƒ^ƒ‹ƒT[ƒ`‚ğs‚¤
+"ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ã‚¿ãƒ«ã‚µãƒ¼ãƒã‚’è¡Œã†
 set incsearch
-"s”Ô†‚ğ•\¦‚·‚é
+"è¡Œç•ªå·ã‚’è¡¨ç¤ºã™ã‚‹
 set number
-"ƒVƒtƒgˆÚ“®•
+"ã‚·ãƒ•ãƒˆç§»å‹•å¹…
 set shiftwidth=4
-"•Â‚¶Š‡ŒÊ‚ª“ü—Í‚³‚ê‚½‚Æ‚«A‘Î‰‚·‚éŠ‡ŒÊ‚ğ•\¦‚·‚é
+"é–‰ã˜æ‹¬å¼§ãŒå…¥åŠ›ã•ã‚ŒãŸã¨ãã€å¯¾å¿œã™ã‚‹æ‹¬å¼§ã‚’è¡¨ç¤ºã™ã‚‹
 set showmatch
-"ŒŸõ‚É‘å•¶š‚ğŠÜ‚ñ‚Å‚¢‚½‚ç‘å/¬‚ğ‹æ•Ê
+"æ¤œç´¢æ™‚ã«å¤§æ–‡å­—ã‚’å«ã‚“ã§ã„ãŸã‚‰å¤§/å°ã‚’åŒºåˆ¥
 set smartcase
-"V‚µ‚¢s‚ğì‚Á‚½‚Æ‚«‚É‚“x‚È©“®ƒCƒ“ƒfƒ“ƒg‚ğs‚¤
+"æ–°ã—ã„è¡Œã‚’ä½œã£ãŸã¨ãã«é«˜åº¦ãªè‡ªå‹•ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã‚’è¡Œã†
 set smartindent
-"s“ª‚Ì—]”’“à‚Å Tab ‚ğ‘Å‚¿‚Ş‚ÆA'shiftwidth' ‚Ì”‚¾‚¯ƒCƒ“ƒfƒ“ƒg‚·‚éB
+"è¡Œé ­ã®ä½™ç™½å†…ã§ Tab ã‚’æ‰“ã¡è¾¼ã‚€ã¨ã€'shiftwidth' ã®æ•°ã ã‘ã‚¤ãƒ³ãƒ‡ãƒ³ãƒˆã™ã‚‹ã€‚
 set smarttab
-"ƒtƒ@ƒCƒ‹“à‚Ì <Tab> ‚ª‘Î‰‚·‚é‹ó”’‚Ì”
+"ãƒ•ã‚¡ã‚¤ãƒ«å†…ã® <Tab> ãŒå¯¾å¿œã™ã‚‹ç©ºç™½ã®æ•°
 "set tabstop=4
-"ƒJ[ƒ\ƒ‹‚ğs“ªAs––‚Å~‚Ü‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+"ã‚«ãƒ¼ã‚½ãƒ«ã‚’è¡Œé ­ã€è¡Œæœ«ã§æ­¢ã¾ã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 set whichwrap=b,s,h,l,<,>,[,]
-"ŒŸõ‚ğƒtƒ@ƒCƒ‹‚Ìæ“ª‚Öƒ‹[ƒv‚µ‚È‚¢
+"æ¤œç´¢ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã¸ãƒ«ãƒ¼ãƒ—ã—ãªã„
 set nowrapscan
-"“ü—Íƒ‚[ƒhAƒXƒe[ƒ^ƒXƒ‰ƒCƒ“‚ÌƒJƒ‰[‚ğ•ÏX
+"å…¥åŠ›ãƒ¢ãƒ¼ãƒ‰æ™‚ã€ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ©ã‚¤ãƒ³ã®ã‚«ãƒ©ãƒ¼ã‚’å¤‰æ›´
 augroup InsertHook
 autocmd!
 autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
 augroup END
 
-"“ú–{Œê“ü—Í‚ğƒŠƒZƒbƒg
+"æ—¥æœ¬èªå…¥åŠ›ã‚’ãƒªã‚»ãƒƒãƒˆ
 au BufNewFile,BufRead * set iminsert=0
-"ƒ^ƒu•‚ğƒŠƒZƒbƒg
+"ã‚¿ãƒ–å¹…ã‚’ãƒªã‚»ãƒƒãƒˆ
 au BufNewFile,BufRead * set tabstop=4 shiftwidth=4
-".rhtml‚Æ.rb‚Åƒ^ƒu•‚ğ•ÏX
+".rhtmlã¨.rbã§ã‚¿ãƒ–å¹…ã‚’å¤‰æ›´
 au BufNewFile,BufRead *.rhtml   set nowrap tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.rb  set nowrap tabstop=2 shiftwidth=2
 
-"‘SŠpƒXƒy[ƒX‚ğ‹Šo‰»
+"å…¨è§’ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¦–è¦šåŒ–
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=#666666
-au BufNewFile,BufRead * match ZenkakuSpace /@/
+au BufNewFile,BufRead * match ZenkakuSpace /ã€€/
 
-"neocomplcache‚Ì—LŒø‰»‚Æ<tab>‚Å‚Ì•âŠ®Š„‚è“–‚Ä
+"neocomplcacheã®æœ‰åŠ¹åŒ–ã¨<tab>ã§ã®è£œå®Œå‰²ã‚Šå½“ã¦
 let g:neocomplcache_enable_at_startup = 1
 function InsertTabWrapper()
     if pumvisible()
