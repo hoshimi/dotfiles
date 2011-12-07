@@ -1,61 +1,64 @@
-"エンコーディングをutf-8に
-set encoding=UTF-8
-"新しい行のインデントを現在行と同じにする
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+if has('win32') || has('win64')
+    let $DOTVIM = expand('~/vimfiles')
+else
+    let $DOTVIM = expand('~/.vim')
+endif
+set rtp+=$DOTVIM/bundle/vundle/
+call vundle#rc('$DOTVIM/bundle/')
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My Bundles here:
+"
+" original repos on github
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/vimfiler'
+Bundle 'Shougo/unite.vim'
+" vim-scripts repos
+
+filetype plugin indent on " required!
+syntax on
 set autoindent
-"バックアップファイルを作るディレクトリ
 set backupdir=$HOME/vimbackup
-"ファイル保存ダイアログの初期ディレクトリをバッファファイル位置に設定
 set browsedir=buffer 
-"クリップボードをWindowsと連携
 set clipboard=unnamed
-"Vi互換をオフ
 set nocompatible
-"スワップファイル用のディレクトリ
 set directory=$HOME/vimbackup
-"タブの代わりに空白文字を挿入する
 set expandtab
-"変更中のファイルでも、保存しないで他のファイルを表示
 set hidden
-"インクリメンタルサーチを行う
 set incsearch
-"行番号を表示する
 set number
-"シフト移動幅
 set shiftwidth=4
-"閉じ括弧が入力されたとき、対応する括弧を表示する
 set showmatch
-"検索時に大文字を含んでいたら大/小を区別
 set smartcase
-"新しい行を作ったときに高度な自動インデントを行う
 set smartindent
-"行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする。
 set smarttab
-"ファイル内の <Tab> が対応する空白の数
-"set tabstop=4
-"カーソルを行頭、行末で止まらないようにする
 set whichwrap=b,s,h,l,<,>,[,]
-"検索をファイルの先頭へループしない
 set nowrapscan
-"入力モード時、ステータスラインのカラーを変更
 augroup InsertHook
 autocmd!
 autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
 autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
 augroup END
 
-"日本語入力をリセット
+inoremap <silent> <ESC> <ESC>
+inoremap <silent> <C-[> <ESC>
+
 au BufNewFile,BufRead * set iminsert=0
-"タブ幅をリセット
 au BufNewFile,BufRead * set tabstop=4 shiftwidth=4
-".rhtmlと.rbでタブ幅を変更
 au BufNewFile,BufRead *.rhtml   set nowrap tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.rb  set nowrap tabstop=2 shiftwidth=2
 
-"全角スペースを視覚化
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=#666666
-au BufNewFile,BufRead * match ZenkakuSpace /　/
+au BufNewFile,BufRead * match ZenkakuSpace /�@/
 
-"neocomplcacheの有効化と<tab>での補完割り当て
+" --plugin--
+" --neocomplcache�̗L������<tab>�ł̕⊮���蓖��--
 let g:neocomplcache_enable_at_startup = 1
 function InsertTabWrapper()
     if pumvisible()
@@ -71,3 +74,35 @@ function InsertTabWrapper()
     endif
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+" --vimfiler--
+let g:vimfiler_as_default_explorer=1
+let g:vimfiler_safe_mode_by_default=0
+" --buftabs--
+let g:buftabs_only_basename=1
+let g:buftabs_in_statusline=1
+let g:buftabs_active_highlight_group="Visual"
+" --�L�[�}�b�s���O--
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+noremap <Space> :bnext<CR>
+noremap <S-Space> :bprev<CR>
+noremap <ESC><ESC> :nohlsearch<CR>
+imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
+smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
+noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
+" �R���\�[���ł̃J���[�\���̂��߂̐ݒ�(�b��I��UNIX��p)
+if has('unix') && !has('gui_running')
+  let uname = system('uname')
+  if uname =~? "linux"
+    set term=builtin_linux
+  elseif uname =~? "freebsd"
+    set term=builtin_cons25
+  elseif uname =~? "Darwin"
+    set term=beos-ansi
+  else
+    set term=builtin_xterm
+  endif
+  unlet uname
+endif
