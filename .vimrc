@@ -21,6 +21,8 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'buftabs'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'ujihisa/unite-colorscheme'
 
 filetype plugin indent on " required!
 syntax on
@@ -77,16 +79,20 @@ let g:buftabs_in_statusline=1
 let g:buftabs_active_highlight_group="Visual"
 set laststatus=2
 set statusline=%f%=%<%m%r[%{(&fenc!=''?&fenc:&enc)}][%{&ff}][%Y][%v,%l/%L]
+" --quickrun--
+let g:quickrun_config = {
+    \ "-" : {
+    \ "hook/time/enable" : 1
+    \ },
+    \}
 " --キーマッピング--
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap ;f <F12>
-nnoremap ,v :e ~/_vimrc<CR> 
-nnoremap ,gv :e ~/_gvimrc<CR>
-nnoremap <F2> :<C-u>source ~/_vimrc<CR>
-nnoremap g<F2> :<C-u>source ~/_gvimrc<CR>
+nnoremap ,v :e ~/.vimrc<CR> 
+nnoremap <F2> :<C-u>source ~/.vimrc<CR>
 noremap <Space> :bnext<CR>
 noremap <S-Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
@@ -94,4 +100,4 @@ imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
-colorscheme wombat
+colorscheme delek
