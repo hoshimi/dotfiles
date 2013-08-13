@@ -5,6 +5,10 @@ export KCODE=u
 
 ## set keybind likes vim
 bindkey -v
+bindkey "^P" up-line-or-history
+bindkey "^N" down-line-or-history
+bindkey '^R' history-incremental-search-backward
+
 
 ## set options
 setopt print_eight_bit
@@ -38,13 +42,13 @@ alias ll='ls -alh'
 alias pd="popd"
 alias setkuinsproxy='export http_proxy="http://proxy.kuins.net:8080"'
 alias kmcportforward="ssh -f -N -l a0077174 -L 16660:irc.box2.kmc.gr.jp:16660 forward.kuins.kyoto-u.ac.jp"
-alias g++="g++-4.9"
-alias gcc="gcc-4.9"
 
 ## history files
-HISTFILE=./.zsh_history
+HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
+setopt hist_ignore_dups
+
 ## set colors
 export LSCOLORS=Exfxcxdxbxegedabagacad
 export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
@@ -77,27 +81,38 @@ SPROMPT=$tmp_sprompt  # スペル訂正用プロンプト
       PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
 ;
 
-## no regist duplicated path
-typeset -U path cdpath fpath manpath
+function chpwd() {
+    ls_abbrev
+}
+ls_abbrev() {
+    # -a : Do not ignore entries starting with ..
+    # -C : Force multi-column output.
+    # -F : Append indicator (one of */=>@|) to entries.
+    local cmd_ls='ls'
+    local -a opt_ls
+    opt_ls=('-aCF' '--color=always')
+    case "${OSTYPE}" in
+        freebsd*|darwin*)
+            if type gls > /dev/null 2>&1; then
+                cmd_ls='gls'
+            else
+                # -G : Enable colorized output.
+                opt_ls=('-aCFG')
+            fi
+            ;;
+    esac
 
-## pathes for sudo
-typeset -xT SUDO_PATH sudo_path
-typeset -U sudo_path
-sudo_path=({/usr/local/,/usr,}/sbin(N-/))
+    local ls_result
+    ls_result=$(CLICOLOR_FORCE=1 COLUMNS=$COLUMNS command $cmd_ls ${opt_ls[@]} | sed $'/^\e\[[0-9;]*m$/d')
 
-## pathes
-path=(~/bin(N-/) /usr/local/bin(N-/) ${path})
-fpath=(/usr/local/share/zsh-completions(N-/) ${fpath})
+    local ls_lines=$(echo "$ls_result" | wc -l | tr -d ' ')
 
-#    typeset 
-#         -U 重複パスを登録しない
-#        -x exportも同時に行う
-#        -T 環境変数へ紐付け
-#    
-#       path=xxxx(N-/)
-#         (N-/): 存在しないディレクトリは登録しない
-#         パス(...): ...という条件にマッチするパスのみ残す
-#            N: NULL_GLOBオプションを設定。
-#               globがマッチしなかったり存在しないパスを無視する
-#            -: シンボリックリンク先のパスを評価
-#            /: ディレクトリのみ残す
+    if [ $ls_lines -gt 10 ]; then
+        echo "$ls_result" | head -n 5
+        echo '...'
+        echo "$ls_result" | tail -n 5
+        echo "$(command ls -1 -A | wc -l | tr -d ' ') files exist"
+    else
+        echo "$ls_result"
+    fi
+}

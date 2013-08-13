@@ -23,6 +23,8 @@ NeoBundle 'Shougo/vimfiler'
 NeoBundle 'buftabs'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'vim_colors'
+NeoBundle 'tomtom/tcomment_vim'
 
 filetype plugin indent on " required!
 syntax on
@@ -55,7 +57,7 @@ inoremap <silent> <C-[> <ESC>
 
 " --neocomplcacheの有効化と<tab>での補完割り当て--
 let g:neocomplcache_enable_at_startup = 1
-function InsertTabWrapper()
+function! InsertTabWrapper()
     if pumvisible()
         return "\<c-n>"
     endif
@@ -76,7 +78,7 @@ let g:vimfiler_safe_mode_by_default=0
 " --buftabs--
 let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
-let g:buftabs_active_highlight_group="Visual"
+"let g:buftabs_active_highlight_group="Visual"
 set laststatus=2
 set statusline=%f%=%<%m%r[%{(&fenc!=''?&fenc:&enc)}][%{&ff}][%Y][%v,%l/%L]
 " --quickrun--
@@ -100,4 +102,16 @@ imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
-colorscheme delek
+" --unite.vim--
+" Prefix
+nnoremap [unite] <Nop>
+nmap <Leader>f [unite]
+
+nnoremap [unite]u :<C-u>Unite -no-split<Space>
+nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
+nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
+nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
+nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
+nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
+
+colorscheme wombat
