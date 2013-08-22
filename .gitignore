@@ -2,3 +2,4 @@
 .vimfiler/
 .unite/
 .vim/bundle/
+.vim/.netrwhist
