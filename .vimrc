@@ -1,5 +1,6 @@
 " -- neobundle --
 set nocompatible
+let g:neobundle_default_git_protocol='git'
 filetype off
 
 if has('vim_starting')
