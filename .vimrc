@@ -20,12 +20,12 @@ endif
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
-NeoBundle 'buftabs'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'vim_colors'
 NeoBundle 'tomtom/tcomment_vim'
-
+NeoBundle 'bling/vim-airline'
+NeoBundle 'bling/vim-bufferline'
 filetype plugin indent on " required!
 syntax on
 set autoindent
@@ -71,16 +71,39 @@ function! InsertTabWrapper()
     endif
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+" --vim-bufferline--
+let g:bufferline_echo = 0
+let g:bufferline_active_buffer_left = '['
+let g:bufferline_active_buffer_right = ']'
+let g:bufferline_modified = '+'
+" denotes whether buffer numbers should be displayed
+let g:bufferline_show_bufnr = 1
+" denotes whether the bufferline should have rotation applied
+let g:bufferline_rotate = 0
+let g:bufferline_fname_mod = ':t'
+let g:bufferline_inactive_highlight = 'StatusLineNC'
+let g:bufferline_active_highlight = 'StatusLine'
+let g:bufferline_solo_highlight = 0
+autocmd VimEnter *
+\ let g:airline_section_c='%{bufferline#refresh_status()}'
+  \ .bufferline#get_status_string()
+" --vim-airline--
+set laststatus=2
+let g:airline_inactive_collapse=1
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline_linecolumn_prefix = '␊ '
+let g:airline_detect_modified=1
+let g:airline_detect_paste=1
+let g:airline_detect_iminsert=1
+let g:airline#extensions#branch#symbol = '⎇ '
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_enable_branch = 1
+let g:airline_section_b = '%{getcwd()} %M'
 " --vimfiler--
 let g:vimfiler_as_default_explorer=1
 let g:vimfiler_safe_mode_by_default=0
 
-" --buftabs--
-let g:buftabs_only_basename=1
-let g:buftabs_in_statusline=1
-"let g:buftabs_active_highlight_group="Visual"
-set laststatus=2
-set statusline=%f%=%<%m%r[%{(&fenc!=''?&fenc:&enc)}][%{&ff}][%Y][%v,%l/%L]
 " --quickrun--
 let g:quickrun_config = {
     \ "-" : {
