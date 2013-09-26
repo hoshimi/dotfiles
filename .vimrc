@@ -25,6 +25,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'vim_colors'
 NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 
 filetype plugin indent on " required!
@@ -73,27 +74,33 @@ function! InsertTabWrapper()
 endfunction
 inoremap <tab> <c-r>=InsertTabWrapper()<cr>
 " --vim-bufferline--
+let g:bufferline_echo = 0
+let g:bufferline_active_buffer_left = '['
+let g:bufferline_active_buffer_right = ']'
+let g:bufferline_modified = '+'
+let g:bufferline_show_bufnr = 1
+let g:bufferline_rotate = 0
+let g:bufferline_fname_mode = ':t'
+let g:bufferline_inactive_highlight = 'StatusLineNC'
+let g:bufferline_active_highlight = 'StatusLine'
+let g:bufferline_solo_highlight = 0
+
 " --vim-lightline--
 set laststatus=2
 
 let g:lightline = {
     \ 'colorscheme': 'wombat',
     \ 'active': {
-    \   'left': [ ['mode', 'paste'], ['readonly', 'filename', 'modified' ], ['bufferline'] ] },
-    \ 'component_function': {
-    \   'bufferline':'MyBufferLine',
-    \ },
+    \   'left': [ ['mode', 'paste'], ['readonly', 'filename', 'modified'], ['bufferline'] ] },
     \ 'component': {
     \   'readonly': '%{&filetype=="help"?"":&readonly?"Read Only":""}',
     \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+    \   'bufferline': '%{bufferline#refresh_status()}%{g:bufferline_status_info.before . g:bufferline_status_info.current . g:bufferline_status_info.after}'
     \ },
     \ 'separator': { 'left' : '', 'right' : '' },
     \ 'subseparator': { 'left' : '|', 'right' : '|' }
 \ }
 
-function! MyBufferLine()
-    return join(getbufline('#', 1, '$'))
-endfunction
 " --vimfiler--
 let g:vimfiler_as_default_explorer=1
 let g:vimfiler_safe_mode_by_default=0
