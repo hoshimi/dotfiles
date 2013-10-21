@@ -44,8 +44,11 @@ set showmatch
 set smartcase
 set smartindent
 set smarttab
+set textwidth=0
 set whichwrap=b,s,h,l,<,>,[,]
 set nowrapscan
+set encoding=utf-8
+set fileencodings=utf-8
 
 augroup InsertHook
 autocmd!
