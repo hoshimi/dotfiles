@@ -10,6 +10,8 @@ export PS1="[\u@\h \W]\\$ "
 alias ls="ls -aF"
 alias ll="ls -lh"
 alias ..="cd .."
+alias ...="cd ..."
+alias grep="grep -n --color=auto"
 
 # load brew bash completion
 if type brew >/dev/null 2>&1; then
