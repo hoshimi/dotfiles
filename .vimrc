@@ -27,6 +27,7 @@ NeoBundle 'vim_colors'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'tpope/vim-fugitive'
 
 filetype plugin indent on " required!
 syntax on
@@ -41,6 +42,7 @@ set hidden
 set incsearch
 set number
 set shiftwidth=4
+set scrolloff=4
 set showmatch
 set smartcase
 set smartindent
@@ -137,5 +139,17 @@ nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
 nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
 nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
 nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
+
+" .tex ファイルの場合にC-tでタイプセット
+function! _TypesetTeX()
+    if expand("%:e") == "tex"
+        exe ":!platex ".expand("%")." && dvipdfmx ".expand("%:r").".dvi && open ".expand("%:r").".pdf"
+    else
+        echo "This file is not tex file."
+    endif
+endfunction
+
+command! TypesetTeX call _TypesetTeX()
+noremap <C-t> :TypesetTeX<CR>
 
 colorscheme wombat
