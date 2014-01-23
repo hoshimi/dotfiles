@@ -5,11 +5,13 @@ export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export PS1="[\u@\h \W]\\$ "
 
 # aliases
-alias ls="ls -aF"
-alias ll="ls -lh"
 alias ..="cd .."
 alias ...="cd ..."
-alias grep="grep -n --color=auto"
+alias ls='ls -aF --color=always'
+alias ll='ls -l'
+alias :q='exit'
+alias diff='diff -y --suppress-common-lines'
+alias grep='grep -n --color=auto'
 
 # load local settings 
 if [ -f ~/.bashrc_local]; then
