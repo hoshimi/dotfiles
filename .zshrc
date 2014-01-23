@@ -9,7 +9,6 @@ bindkey "^P" up-line-or-history
 bindkey "^N" down-line-or-history
 bindkey '^R' history-incremental-search-backward
 
-
 ## set options
 setopt print_eight_bit
 setopt no_beep
@@ -35,13 +34,11 @@ unsetopt caseglob
 ## global aliases
 alias -g L='| less'
 alias -g G='| grep'
-
-## aliases
 alias ls='ls -aFG'
 alias ll='ls -alh'
 alias pd="popd"
 alias setkuinsproxy='export http_proxy="http://proxy.kuins.net:8080"'
-alias kmcportforward="ssh -f -N -l a0077174 -L 16660:irc.box2.kmc.gr.jp:16660 forward.kuins.kyoto-u.ac.jp"
+
 
 ## history files
 HISTFILE=~/.zsh_history
@@ -116,3 +113,6 @@ ls_abbrev() {
         echo "$ls_result"
     fi
 }
+
+# Load local settings 
+[ -f ~/.zshrc_local ] && source ~/.zshrc_local
