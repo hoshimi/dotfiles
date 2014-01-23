@@ -148,6 +148,9 @@ nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
 nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
 nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
 
+" --syntax files--
+autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
+
 " .tex ファイルの場合にC-tでタイプセット
 function! _TypesetTeX()
     if expand("%:e") == "tex"
