@@ -14,6 +14,6 @@ alias diff='diff -y --suppress-common-lines'
 alias grep='grep -n --color=auto'
 
 # load local settings 
-if [ -f ~/.bashrc_local]; then
+if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local
 fi
