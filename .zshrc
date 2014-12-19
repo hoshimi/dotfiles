@@ -38,6 +38,8 @@ alias ls='ls -aFG'
 alias ll='ls -alh'
 alias pd="popd"
 alias setkuinsproxy='export http_proxy="http://proxy.kuins.net:8080"'
+alias ps2pdf='ps2pdf -dEPSCrop -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode'
+alias gst='git status'
 
 
 ## history files
@@ -52,6 +54,7 @@ export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30
 export ZLS_COLORS=$LS_COLORS
 export CLICOLOR=true
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 ## set prompt
 autoload -U colors;

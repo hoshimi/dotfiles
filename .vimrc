@@ -1,36 +1,34 @@
 " -- neobundle --
-set nocompatible
 let g:neobundle_default_git_protocol='git'
 filetype off
 
 if has('vim_starting')
+  if &compatible
+    set nocompatible
+  endif
+
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
-
-filetype plugin indent on
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 " -- neobundle installation check --
-if neobundle#exists_not_installed_bundles()
-  echomsg 'Not installed bundles : ' .
-        \ string(neobundle#get_not_installed_bundle_names())
-  echomsg 'Please execute ":NeoBundleInstall" command.'
-endif
-
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle 'ujihisa/unite-font'
 NeoBundle 'vim_colors'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'Shougo/vimproc.vim', {'build': {'mac': 'make -f make_mac.mak'}}
+
+call neobundle#end()
 
 filetype plugin indent on " required!
+NeoBundleCheck
 syntax on
 set autoindent
 set noswapfile
@@ -53,6 +51,9 @@ set whichwrap=b,s,h,l,<,>,[,]
 set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
+
+" set shiftwidth by FileType
+autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 augroup InsertHook
 autocmd!
@@ -121,7 +122,22 @@ let g:quickrun_config = {
     \ "hook/time/enable" : 1
     \ },
     \}
+
+" --quickrun for latexmk--
+" .tex ファイルの場合に<Leader>rでタイプセット
+let g:quickrun_config['tex'] = {
+            \ 'command':'latexmk',
+            \ 'outputter': 'error',
+            \ 'outputter/error/error' : 'quickfix',
+            \ 'cmdopt' : '-pdfdvi',
+            \ 'exec' : ['%c %o %s']
+            \ }
+
 " --キーマッピング--
+let mapleader = ","
+noremap \ ,
+
+nmap sq :bd<CR>
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
@@ -148,19 +164,46 @@ nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
 nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
 nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
 
-" --syntax files--
-autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
+augroup myLaTeXQuickrun
+    au!
+    au BufEnter *.tex call <SID>SetLaTeXMainSource()
+    au BufEnter *.tex nnoremap <Leader>v :call <SID>TexPdfView() <CR>
+augroup END
 
-" .tex ファイルの場合にC-tでタイプセット
-function! _TypesetTeX()
-    if expand("%:e") == "tex"
-        exe ":!platex ".expand("%")." && dvipdfmx ".expand("%:r").".dvi && open ".expand("%:r").".pdf"
-    else
-        echo "This file is not tex file."
+function! s:SetLaTeXMainSource()
+    let currentFileDirectory = expand('%:p:h').'\'
+    let latexmain = glob(currentFileDirectory.'*.latexmain')
+    let g:quickrun_config['tex']['srcfile'] = fnamemodify(latexmain, ':r')
+    if latexmain == ''
+        let g:quickrun_config['tex']['srcfile'] = expand("%")
     endif
 endfunction
 
-command! TypesetTeX call _TypesetTeX()
-noremap <C-t> :TypesetTeX<CR>
+function! s:TexPdfView()
+    if exists("g:quickrun_config['tex']['srcfile']")
+        let texPdfFilename = fnamemodify(g:quickrun_config['tex']['srcfile'], ':.:r') . '.pdf'
+    endif
+    if has('win32')
+        let g:TexPdfViewCommand = '!start '.
+                    \             '"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe" -reuse-instance '.
+                    \             texPdfFilename
+    elseif has('unix')
+        let g:TexPdfViewCommand = '! '.
+                    \             'open '.
+                    \             texPdfFilename
+    endif
+    execute g:TexPdfViewCommand
+endfunction
+
+"function! _TypesetTeX()
+"    if expand("%:e") == "tex"
+"        exe ":!platex ".expand("%")." && dvipdfmx ".expand("%:r").".dvi && open ".expand("%:r").".pdf"
+"    else
+"        echo "This file is not tex file."
+"    endif
+"endfunction
+"
+"command! TypesetTeX call _TypesetTeX()
+"noremap <C-t> :TypesetTeX<CR>
 
 colorscheme wombat
