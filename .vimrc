@@ -23,7 +23,15 @@ NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'Shougo/vimproc.vim', {'build': {'mac': 'make -f make_mac.mak'}}
+NeoBundle 'Shougo/vimproc.vim', {
+    \'build': {
+        \   'windows': 'tools\\update-dll-mingw',
+        \   'cygwin': 'make -f make_cygwin.mak',
+        \   'mac': 'make -f make_mac.mak',
+        \   'linux': 'make',
+        \   'unix': 'gmake',
+    \},
+\}
 
 call neobundle#end()
 
@@ -143,7 +151,7 @@ nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap ;f <F12>
-nnoremap ,v :e ~/.vimrc<CR> 
+nnoremap <Leader>c :e ~/.vimrc<CR> 
 nnoremap <F2> :<C-u>source ~/.vimrc<CR>
 noremap <Space> :bnext<CR>
 noremap <S-Space> :bprev<CR>

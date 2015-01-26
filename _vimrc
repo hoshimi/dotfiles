@@ -64,6 +64,8 @@ set encoding=utf-8
 set fileencodings=utf-8
 set textwidth=0
 
+let g:tex_conceal = ''
+
 augroup InsertHook
 autocmd!
 autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
