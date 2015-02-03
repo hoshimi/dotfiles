@@ -165,6 +165,14 @@ imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
+noremap n nzz
+noremap N Nzz
+noremap Y y$
+
 " --unite.vim--
 " Prefix
 nnoremap [unite] <Nop>
