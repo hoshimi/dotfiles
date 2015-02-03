@@ -1,15 +1,17 @@
 " -- neobundle --
-set nocompatible
 let g:neobundle_default_git_protocol='git'
 filetype off
 
 if has('vim_starting')
+  if &compatible
+    set nocompatible
+  endif
+
   set runtimepath+=~/vimfiles/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/vimfiles/bundle/'))
+call neobundle#begin(expand('~/vimfiles/bundle/'))
 
-filetype plugin indent on
 
 " -- neobundle installation check --
 if neobundle#exists_not_installed_bundles()
@@ -19,10 +21,10 @@ if neobundle#exists_not_installed_bundles()
 endif
 
 NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
@@ -31,13 +33,15 @@ NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Shougo/vimproc', {
-    \ 'build' : {
-    \     'windows' : 'make -f make_mingw32.mak',
-    \     'cygwin' : 'make -f make_cygwin.mak',
-    \     'mac' : 'make -f make_mac.mak',
-    \     'unix' : 'make -f make_unix.mak',
-    \    },
+    \'build': {
+        \   'windows': 'tools\\update-dll-mingw',
+        \   'cygwin': 'make -f make_cygwin.mak',
+        \   'mac': 'make -f make_mac.mak',
+        \   'linux': 'make',
+        \   'unix': 'gmake',
+    \},
 \ }
+call neobundle#end()
 
 filetype plugin indent on " required!
 syntax on
@@ -65,6 +69,7 @@ set fileencodings=utf-8
 set textwidth=0
 
 let g:tex_conceal = ''
+let g:tex_flavor='latex'
 
 augroup InsertHook
 autocmd!
@@ -77,7 +82,7 @@ inoremap <silent> <C-[> <ESC>
 let mapleader = ","
 noremap \ ,
 
-" --neocomplcache?̗L??????<tab>?ł̕⊮???蓖??--
+" --neocomplcache--
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -118,6 +123,7 @@ inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
 inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -188,6 +194,7 @@ let g:quickrun_config = {
 
 let g:quickrun_config['tex'] = {
     \   'command' : 'latexmk',
+    \ 'outputter/error/error' : 'quickfix',
     \   'cmdopt': '-pdfdvi',
     \   'exec': ['%c %o %s']
 \}
@@ -195,7 +202,7 @@ let g:quickrun_config['tex'] = {
 augroup myLaTeXQuickrun
     au!
     au BufEnter *.tex call <SID>SetLaTeXMainSource()
-    au BufEnter *.tex nnoremap <Leader>t :call <SID>TexPdfView() <CR>
+    au BufEnter *.tex nnoremap <Leader>v :call <SID>TexPdfView() <CR>
 augroup END
 
 function! s:SetLaTeXMainSource()
@@ -225,18 +232,20 @@ function! s:TexPdfView()
     execute g:TexPdfViewCommand
 endfunction
 
-" --?L?[?}?b?s???O--
+nmap sq :bd<CR>
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap ;f <F12>
-nnoremap <Leader>v :e ~/_vimrc<CR> 
+nnoremap <Leader>c :e ~/_vimrc<CR> 
 nnoremap <F2> :<C-u>source ~/_vimrc<CR>
 noremap <Space> :bnext<CR>
 noremap <S-Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
-noremap o i<CR><ESC>
+imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
+smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
+noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
 " --unite.vim--
 " Prefix
@@ -252,5 +261,7 @@ nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer f
 
 " --syntax files--
 autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
+" set shiftwidth by FileType
+autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 colorscheme wombat

@@ -60,6 +60,10 @@ set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
 
+" TeX settings
+let g:tex_conceal=''
+let g:tex_flavor='latex'
+
 " set shiftwidth by FileType
 autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -127,7 +131,9 @@ let g:vimfiler_safe_mode_by_default=0
 " --quickrun--
 let g:quickrun_config = {
     \ "-" : {
-    \ "hook/time/enable" : 1
+        \ "hook/time/enable" : 1,
+        \ "outputter/buffer/name" : "quickrun",
+        \ "outputter/buffer/split" : "vertical",
     \ },
     \}
 
@@ -135,7 +141,6 @@ let g:quickrun_config = {
 " .tex ファイルの場合に<Leader>rでタイプセット
 let g:quickrun_config['tex'] = {
             \ 'command':'latexmk',
-            \ 'outputter': 'error',
             \ 'outputter/error/error' : 'quickfix',
             \ 'cmdopt' : '-pdfdvi',
             \ 'exec' : ['%c %o %s']
@@ -151,11 +156,11 @@ nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap ;f <F12>
+nnoremap <Tab><Space> :bprev<CR>
+nnoremap <Space> :bnext<CR>
 nnoremap <Leader>c :e ~/.vimrc<CR> 
 nnoremap <F2> :<C-u>source ~/.vimrc<CR>
-noremap <Space> :bnext<CR>
-noremap <S-Space> :bprev<CR>
-noremap <ESC><ESC> :nohlsearch<CR>
+nnoremap <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
@@ -179,7 +184,7 @@ augroup myLaTeXQuickrun
 augroup END
 
 function! s:SetLaTeXMainSource()
-    let currentFileDirectory = expand('%:p:h').'\'
+    let currentFileDirectory = expand('%:p:h').'/'
     let latexmain = glob(currentFileDirectory.'*.latexmain')
     let g:quickrun_config['tex']['srcfile'] = fnamemodify(latexmain, ':r')
     if latexmain == ''
@@ -202,16 +207,4 @@ function! s:TexPdfView()
     endif
     execute g:TexPdfViewCommand
 endfunction
-
-"function! _TypesetTeX()
-"    if expand("%:e") == "tex"
-"        exe ":!platex ".expand("%")." && dvipdfmx ".expand("%:r").".dvi && open ".expand("%:r").".pdf"
-"    else
-"        echo "This file is not tex file."
-"    endif
-"endfunction
-"
-"command! TypesetTeX call _TypesetTeX()
-"noremap <C-t> :TypesetTeX<CR>
-
 colorscheme wombat
