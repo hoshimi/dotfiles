@@ -53,6 +53,9 @@ set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
 
+" set shiftwidth by FileType
+autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
 augroup InsertHook
 autocmd!
 autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
