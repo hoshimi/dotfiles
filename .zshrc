@@ -9,7 +9,6 @@ bindkey "^P" up-line-or-history
 bindkey "^N" down-line-or-history
 bindkey '^R' history-incremental-search-backward
 
-
 ## set options
 setopt print_eight_bit
 setopt no_beep
@@ -35,13 +34,13 @@ unsetopt caseglob
 ## global aliases
 alias -g L='| less'
 alias -g G='| grep'
-
-## aliases
 alias ls='ls -aFG'
 alias ll='ls -alh'
 alias pd="popd"
 alias setkuinsproxy='export http_proxy="http://proxy.kuins.net:8080"'
-alias kmcportforward="ssh -f -N -l a0077174 -L 16660:irc.box2.kmc.gr.jp:16660 forward.kuins.kyoto-u.ac.jp"
+alias ps2pdf='ps2pdf -dEPSCrop -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode'
+alias gst='git status'
+
 
 ## history files
 HISTFILE=~/.zsh_history
@@ -55,6 +54,7 @@ export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30
 export ZLS_COLORS=$LS_COLORS
 export CLICOLOR=true
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 ## set prompt
 autoload -U colors;
@@ -116,3 +116,6 @@ ls_abbrev() {
         echo "$ls_result"
     fi
 }
+
+# Load local settings 
+[ -f ~/.zshrc_local ] && source ~/.zshrc_local

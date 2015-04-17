@@ -1,22 +1,22 @@
-# .bashrc
-# PATHs
+# Global PATHs
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
 # terminal 
 export PS1="[\u@\h \W]\\$ "
 
 # aliases
-
-alias ls="ls -aF"
-alias ll="ls -lh"
 alias ..="cd .."
 alias ...="cd ..."
-alias grep="grep -n --color=auto"
+alias ls='ls -aF --color=always'
+alias ll='ls -l'
+alias :q='exit'
+alias diff='diff -y --suppress-common-lines'
+alias grep='grep -n --color=auto'
+alias gst='git status'
+alias synchipic='rsync -av kdk-a:~/syncdata/ /cygdrive/f/Dropbox/Lab/master/data/HiPIC/'
+alias hipicdir='cd /cygdrive/f/Dropbox/Lab/master/data/HiPIC'
 
-# load brew bash completion
-if type brew >/dev/null 2>&1; then
-    BREW_PREFIX=$(brew --prefix)
-    if [ -e $BREW_PREFIX/Library/Contributions/brew_bash_completion.sh ]; then
-        source $BREW_PREFIX/Library/Contributions/brew_bash_completion.sh >/dev/null 2>&1
-    fi
+# load local settings 
+if [ -f ~/.bashrc_local ]; then
+    source ~/.bashrc_local
 fi

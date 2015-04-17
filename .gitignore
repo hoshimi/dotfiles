@@ -3,3 +3,4 @@
 .unite/
 .vim/bundle/
 .vim/.netrwhist
+.vim/backup

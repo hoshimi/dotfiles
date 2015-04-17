@@ -1,23 +1,18 @@
 " -- neobundle --
-set nocompatible
 let g:neobundle_default_git_protocol='git'
 filetype off
 
 if has('vim_starting')
+  if &compatible
+    set nocompatible
+  endif
+
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
-
-filetype plugin indent on
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 " -- neobundle installation check --
-if neobundle#exists_not_installed_bundles()
-  echomsg 'Not installed bundles : ' .
-        \ string(neobundle#get_not_installed_bundle_names())
-  echomsg 'Please execute ":NeoBundleInstall" command.'
-endif
-
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
@@ -28,8 +23,20 @@ NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'Shougo/vimproc.vim', {
+    \'build': {
+        \   'windows': 'tools\\update-dll-mingw',
+        \   'cygwin': 'make -f make_cygwin.mak',
+        \   'mac': 'make -f make_mac.mak',
+        \   'linux': 'make',
+        \   'unix': 'gmake',
+    \},
+\}
+
+call neobundle#end()
 
 filetype plugin indent on " required!
+NeoBundleCheck
 syntax on
 set autoindent
 set noswapfile
@@ -53,6 +60,9 @@ set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
 
+" TeX settings
+let g:tex_conceal=''
+let g:tex_flavor='latex'
 " set shiftwidth by FileType
 autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -120,23 +130,47 @@ let g:vimfiler_safe_mode_by_default=0
 " --quickrun--
 let g:quickrun_config = {
     \ "-" : {
-    \ "hook/time/enable" : 1
+        \ "hook/time/enable" : 1,
+        \ "outputter/buffer/name" : "quickrun",
+        \ "outputter/buffer/split" : "vertical",
     \ },
     \}
+
+" --quickrun for latexmk--
+" .tex ファイルの場合に<Leader>rでタイプセット
+let g:quickrun_config['tex'] = {
+            \ 'command':'latexmk',
+            \ 'outputter/error/error' : 'quickfix',
+            \ 'cmdopt' : '-pdfdvi',
+            \ 'exec' : ['%c %o %s']
+            \ }
+
 " --キーマッピング--
+let mapleader = ","
+noremap \ ,
+
+nmap sq :bd<CR>
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap ;f <F12>
-nnoremap ,v :e ~/.vimrc<CR> 
+nnoremap <Tab><Space> :bprev<CR>
+nnoremap <Space> :bnext<CR>
+nnoremap <Leader>c :e ~/.vimrc<CR> 
 nnoremap <F2> :<C-u>source ~/.vimrc<CR>
-noremap <Space> :bnext<CR>
-noremap <S-Space> :bprev<CR>
-noremap <ESC><ESC> :nohlsearch<CR>
+nnoremap <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
+
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
+noremap n nzz
+noremap N Nzz
+noremap Y y$
 
 " --unite.vim--
 " Prefix
@@ -150,16 +184,34 @@ nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
 nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
 nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
 
-" .tex ファイルの場合にC-tでタイプセット
-function! _TypesetTeX()
-    if expand("%:e") == "tex"
-        exe ":!platex ".expand("%")." && dvipdfmx ".expand("%:r").".dvi && open ".expand("%:r").".pdf"
-    else
-        echo "This file is not tex file."
+augroup myLaTeXQuickrun
+    au!
+    au BufEnter *.tex call <SID>SetLaTeXMainSource()
+    au BufEnter *.tex nnoremap <Leader>v :call <SID>TexPdfView() <CR>
+augroup END
+
+function! s:SetLaTeXMainSource()
+    let currentFileDirectory = expand('%:p:h').'/'
+    let latexmain = glob(currentFileDirectory.'*.latexmain')
+    let g:quickrun_config['tex']['srcfile'] = fnamemodify(latexmain, ':r')
+    if latexmain == ''
+        let g:quickrun_config['tex']['srcfile'] = expand("%")
     endif
 endfunction
 
-command! TypesetTeX call _TypesetTeX()
-noremap <C-t> :TypesetTeX<CR>
-
+function! s:TexPdfView()
+    if exists("g:quickrun_config['tex']['srcfile']")
+        let texPdfFilename = fnamemodify(g:quickrun_config['tex']['srcfile'], ':.:r') . '.pdf'
+    endif
+    if has('win32')
+        let g:TexPdfViewCommand = '!start '.
+                    \             '"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe" -reuse-instance '.
+                    \             texPdfFilename
+    elseif has('unix')
+        let g:TexPdfViewCommand = '! '.
+                    \             'open '.
+                    \             texPdfFilename
+    endif
+    execute g:TexPdfViewCommand
+endfunction
 colorscheme wombat
