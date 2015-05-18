@@ -159,6 +159,7 @@ nnoremap <Tab><Space> :bprev<CR>
 nnoremap <Space> :bnext<CR>
 nnoremap <Leader>c :e ~/.vimrc<CR> 
 nnoremap <F2> :<C-u>source ~/.vimrc<CR>
+nnoremap <F5> :e!<CR>
 nnoremap <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
