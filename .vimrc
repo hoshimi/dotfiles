@@ -157,8 +157,6 @@ nmap <C-k> <C-w>k
 nmap ;f <F12>
 nnoremap <Tab><Space> :bprev<CR>
 nnoremap <Space> :bnext<CR>
-nnoremap <Leader>c :e ~/.vimrc<CR> 
-nnoremap <F2> :<C-u>source ~/.vimrc<CR>
 nnoremap <F5> :e!<CR>
 nnoremap <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
@@ -172,6 +170,22 @@ noremap gk k
 noremap n nzz
 noremap N Nzz
 noremap Y y$
+
+noremap : q:a
+noremap / q/a
+
+" kakko hokan
+inoremap {<CR> {}<Left><CR><ESC><S-o>
+inoremap [<CR> []<Left><CR><ESC><S-o>
+inoremap (<CR> ()<Left><CR><ESC><S-o>
+
+" Tab zsh
+set wildmenu
+set wildmode=full
+
+" Ex mode
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
 
 " --unite.vim--
 " Prefix
