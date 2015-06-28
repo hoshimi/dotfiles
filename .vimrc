@@ -49,6 +49,7 @@ set hidden
 set incsearch
 set number
 set shiftwidth=4
+set softtabstop=4
 set scrolloff=4
 set showmatch
 set smartcase
@@ -59,12 +60,12 @@ set whichwrap=b,s,h,l,<,>,[,]
 set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
+let g:fortran_indent_more=1
+let g:fortran_do_enddo=1
 
 " TeX settings
 let g:tex_conceal=''
 let g:tex_flavor='latex'
-" set shiftwidth by FileType
-autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 augroup InsertHook
 autocmd!
@@ -170,7 +171,6 @@ noremap gk k
 noremap n nzz
 noremap N Nzz
 noremap Y y$
-
 noremap : q:a
 noremap / q/a
 

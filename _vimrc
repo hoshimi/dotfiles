@@ -29,6 +29,8 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
 NeoBundle 'vim_colors'
+NeoBundle 'fuenor/im_control.vim'
+NeoBundle 'tpope/vim-surround'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -49,12 +51,14 @@ set autoindent
 set noswapfile
 set backupdir=$HOME/vimfiles/backup
 set directory=$HOME/vimfiles/backup
+set undodir=$HOME/vimfiles/undo
 set browsedir=buffer 
 set clipboard=unnamed
 set expandtab
 set hidden
 set incsearch
 set number
+set softtabstop=4
 set shiftwidth=4
 set scrolloff=4
 set showmatch
@@ -67,6 +71,8 @@ set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
 set textwidth=0
+let g:fortran_indent_more=1
+let g:fortran_do_enddo=1
 
 let g:tex_conceal = ''
 let g:tex_flavor='latex'
@@ -79,8 +85,6 @@ augroup END
 
 inoremap <silent> <ESC> <ESC>
 inoremap <silent> <C-[> <ESC>
-let mapleader = ","
-noremap \ ,
 
 " --neocomplcache--
 " Disable AutoComplPop.
@@ -135,8 +139,8 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+imap <C-s>     <Plug>(neosnippet_expand_or_jump)
+smap <C-s>     <Plug>(neosnippet_expand_or_jump)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ?  "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
@@ -165,18 +169,26 @@ set laststatus=2
 let g:lightline = {
     \ 'colorscheme': 'wombat',
     \ 'active': {
-    \   'left': [ ['mode', 'paste'], ['readonly', 'filename', 'modified'], ['bufferline'] ] },
+    \   'left': [ ['mode', 'paste'], ['readonly', 'filename', 'modified'], ['bufferline'], ['imcontrol'] ] },
     \ 'component': {
     \   'readonly': '%{&filetype=="help"?"":&readonly?"Read Only":""}',
     \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-    \   'bufferline': '%{bufferline#refresh_status()}%{g:bufferline_status_info.before . g:bufferline_status_info.current . g:bufferline_status_info.after}'
+    \   'bufferline': '%{bufferline#refresh_status()}%{g:bufferline_status_info.before . g:bufferline_status_info.current . g:bufferline_status_info.after}',
+    \   'imcontrol': '%{IMStatus("日本語固定")}',
     \ },
     \ 'separator': { 'left' : '', 'right' : '' },
     \ 'subseparator': { 'left' : '|', 'right' : '|' }
 \ }
 
-if !has('gui_running')
-    set t_Co=256
+if has('gui_running')
+  " 「日本語入力固定モード」の動作モード
+  let IM_CtrlMode = 4
+  " GVimで<C-^>が使える場合の「日本語入力固定モード」切替キー
+  inoremap <silent> <C-e> <C-^><C-r>=IMState('FixMode')<CR>
+else
+  set t_Co=256
+  " 非GUIの場合(この例では「日本語入力固定モード」を無効化している)
+  let IM_CtrlMode = 0
 endif
 
 " --vimfiler--
@@ -198,6 +210,74 @@ let g:quickrun_config['tex'] = {
     \   'cmdopt': '-pdfdvi',
     \   'exec': ['%c %o %s']
 \}
+
+" --キーマッピング--
+let mapleader = ","
+noremap \ ,
+
+nmap sq :bd<CR>
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap ;f <F12>
+nnoremap <F5> :e!<CR>
+noremap <Space> :bnext<CR>
+noremap <Tab><Space> :bprev<CR>
+noremap <ESC><ESC> :nohlsearch<CR>
+imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
+smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
+noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
+
+"noremap w W
+"noremap W w
+"noremap b B
+"noremap B b
+
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
+noremap n nzz
+noremap N Nzz
+noremap Y y$
+" cモードでもファイル補完を有効にする方法を調べたらつかう
+"noremap : q:a
+"noremap / q/a
+
+" kakko hokan
+inoremap {<CR> {}<Left><CR><ESC><S-o>
+inoremap [<CR> []<Left><CR><ESC><S-o>
+inoremap (<CR> ()<Left><CR><ESC><S-o>
+
+" mappings in insert mode
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
+inoremap <silent> <C-x> <BS>
+inoremap <silent> <C-d> <Del>
+inoremap <C-z> <ESC><Undo>
+
+" Tab zsh
+set wildmenu
+set wildmode=full
+
+" Ex mode
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+
+" --unite.vim--
+" Prefix
+nnoremap [unite] <Nop>
+nmap <Leader>f [unite]
+
+nnoremap [unite]u :<C-u>Unite -no-split<Space>
+nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
+nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
+nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
+nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
+nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
 
 augroup myLaTeXQuickrun
     au!
@@ -231,41 +311,6 @@ function! s:TexPdfView()
     endif
     execute g:TexPdfViewCommand
 endfunction
-
-nmap sq :bd<CR>
-nmap <C-h> <C-w>h
-nmap <C-l> <C-w>l
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap ;f <F12>
-nnoremap <Leader>c :e ~/_vimrc<CR> 
-nnoremap <F2> :<C-u>source ~/_vimrc<CR>
-noremap <Space> :bnext<CR>
-noremap <S-Space> :bprev<CR>
-noremap <ESC><ESC> :nohlsearch<CR>
-imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
-smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
-noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
-
-noremap j gj
-noremap k gk
-noremap gj j
-noremap gk k
-noremap n nzz
-noremap N Nzz
-noremap Y y$
-
-" --unite.vim--
-" Prefix
-nnoremap [unite] <Nop>
-nmap <Leader>f [unite]
-
-nnoremap [unite]u :<C-u>Unite -no-split<Space>
-nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
-nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
-nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
-nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
-nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
 
 " --syntax files--
 autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
