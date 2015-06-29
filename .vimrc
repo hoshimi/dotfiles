@@ -20,6 +20,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'vim_colors'
 NeoBundle 'tomtom/tcomment_vim'
+NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
@@ -163,6 +164,10 @@ nnoremap <ESC><ESC> :nohlsearch<CR>
 imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
+
+" caw
+nmap <Leader>c <Plug>(caw:i:toggle)
+vmap <Leader>c <Plug>(caw:i:toggle)
 
 noremap j gj
 noremap k gk
