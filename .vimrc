@@ -41,6 +41,7 @@ NeoBundle 'vim_colors'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'fuenor/im_control.vim'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'lervag/vimtex'
 NeoBundle 'itchyny/lightline.vim'
@@ -288,6 +289,10 @@ noremap <ESC><ESC> :nohlsearch<CR>
 "imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 "smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 "noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
+
+" caw
+nmap <Leader>c <Plug>(caw:i:toggle)
+vmap <Leader>c <Plug>(caw:i:toggle)
 
 " move on display lines
 noremap j gj
