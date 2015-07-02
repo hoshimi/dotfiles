@@ -202,7 +202,7 @@ endif
 " ウインドウの幅
 set columns=80
 " ウインドウの高さ
-set lines=25
+set lines=200
 " コマンドラインの高さ(GUI使用時)
 set cmdheight=2
 " 画面を黒地に白にする (次行の先頭の " を削除すれば有効になる)
@@ -293,4 +293,4 @@ endif
 "
 let $SSH_ASKPASS = simplify($VIM . '/../../MacOS') . '/macvim-askpass'
 set noimdisable
-set imdisableactivate
+"set noimdisableactivate
