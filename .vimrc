@@ -3,7 +3,7 @@ if has('win32')
 endif
 
 " -- neobundle --
-let g:neobundle_default_git_protocol='git'
+let g:neobundle_default_git_protocol='https'
 filetype off
 
 if has('vim_starting')
