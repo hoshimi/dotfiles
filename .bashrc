@@ -7,7 +7,7 @@ export PS1="[\u@\h \W]\\$ "
 # aliases
 alias ..="cd .."
 alias ...="cd ..."
-alias ls='ls -aF --color=always'
+alias ls='ls -GaF'
 alias ll='ls -l'
 alias :q='exit'
 alias diff='diff -y --suppress-common-lines'
