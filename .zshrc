@@ -118,4 +118,8 @@ ls_abbrev() {
 }
 
 # Load local settings 
+function load_rc { [ -f ~/.zshrc_$1 ] && source ~/.zshrc_$1 }
+
+load_rc percol_select_history
+#load_rc percol_select_history
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local

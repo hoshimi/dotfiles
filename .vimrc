@@ -34,10 +34,13 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'Shougo/unite-outline'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
 NeoBundle 'vim_colors'
+NeoBundle 'tacroe/unite-mark'
+NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'fuenor/im_control.vim'
 NeoBundle 'tpope/vim-surround'
@@ -67,7 +70,7 @@ set backupdir=$HOME/.vim/backup
 set directory=$HOME/.vim/backup
 set undodir=$HOME/.vim/undo
 set browsedir=buffer 
-set clipboard=unnamed
+set clipboard+=unnamed,autoselect
 set expandtab
 set hidden
 set incsearch
@@ -84,6 +87,7 @@ set whichwrap=b,s,h,l,<,>,[,]
 set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
+set backspace=indent,eol,start
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
 
@@ -290,6 +294,9 @@ noremap <ESC><ESC> :nohlsearch<CR>
 "smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
 "noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
+" add single space
+noremap <Leader><Space> i<Space><ESC>
+
 " caw
 nmap <Leader>c <Plug>(caw:i:toggle)
 vmap <Leader>c <Plug>(caw:i:toggle)
@@ -341,12 +348,14 @@ cnoremap <C-n> <Down>
 nnoremap [unite] <Nop>
 nmap <Leader>f [unite]
 
-nnoremap [unite]u :<C-u>Unite -no-split<Space>
 nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
 nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
-nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
-nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
-nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
+nnoremap <silent> [unite]m :<C-u>Unite<Space>-vertical -winwidth=30 mark<CR>
+nnoremap <silent> [unite]o :<C-u>Unite<Space>-vertical -winwidth=30 -no-quit outline<CR>
+nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=file buffer bookmark file<CR>
+
+" -- vim signature --
+let g:SignatureMarkTextHLDynamic = 1
 
 let g:vimtex_latexmk_enabled = 1
 let g:vimtex_latexmk_options = '-pdfdvi'
@@ -362,7 +371,11 @@ if has('win32')
     let g:vimtex_view_general_options = '-forward-search @tex @line @pdf'
     let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 elseif has('unix')
-    let g:vimtex_view_general_viewer = 'open'
+    if system('uname')=~'Darwin'
+        let g:vimtex_view_general_viewer = 'open'
+    else
+        let g:vimtex_view_general_viewer = 'open'
+    endif
 endif
 
 " fold

@@ -188,9 +188,9 @@ if has('win32')
     set ambiwidth=auto
   endif
 elseif has('gui_macvim')
-  set guifont=Osaka-Mono:h14
+  set guifont=Osaka-Mono:h18
 elseif has('mac')
-  set guifont=Osaka－等幅:h14
+  set guifont=Osaka－等幅:h18
 elseif has('xfontset')
   " UNIX用 (xfontsetを使用)
   set guifontset=a14,r14,k14
