@@ -1,9 +1,16 @@
+let hostname = substitute(system('hostname'), '\n', '', '')
+
 if has('win32')
     set runtimepath+=$HOME/.vim/,$HOME/.vim/after
 endif
 
 " -- neobundle --
-let g:neobundle_default_git_protocol='https'
+if hostname !~ '^xe.*$' && hostname !~ '^ap.*$'
+    let g:neobundle_default_git_protocol='https'
+else
+    let g:neobundle_default_git_protocol='git'
+endif
+
 filetype off
 
 if has('vim_starting')
