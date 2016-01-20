@@ -10,7 +10,6 @@ if hostname !~ '^xe.*$' && hostname !~ '^ap.*$'
 else
     let g:neobundle_default_git_protocol='git'
 endif
-
 filetype off
 
 if has('vim_starting')
@@ -110,7 +109,7 @@ augroup END
 
 
 if s:meet_neocomplete_requirements()
-    " 新しく追加した neocomplete の設定
+    " ?V??????B??? neocomplete ????
     " Disable AutoComplPop.
     let g:acp_enableAtStartup = 0
     " Use neocomplete.
@@ -158,7 +157,7 @@ if s:meet_neocomplete_requirements()
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
     autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
     " Enable heavy omni completion.
@@ -370,11 +369,11 @@ let g:vimtex_latexmk_continuous = 1
 let g:vimtex_latexmk_background = 1
 let g:vimtex_view_method = 'general'
 
-" コンパイル終了後のエラー通知オフ
+" ?R???p?C???I??????G???[??m?I?t
 let g:vimtex_latexmk_callback = 0
 
 if has('win32')
-    let g:vimtex_view_general_viewer = 'SumatraPDF.exe'
+    let g:vimtex_view_general_viewer = 'SumatraPDF'
     let g:vimtex_view_general_options = '-forward-search @tex @line @pdf'
     let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 elseif has('unix')
@@ -387,26 +386,11 @@ endif
 
 " fold
 let g:vimtex_fold_enabled = 1
-let g:vimtex_fold_automatic = 1
+let g:vimtex_fold_automatic = 0
 let g:vimtex_fold_envs = 1
 
 let g:vimtex_toc_split_pos = "topleft"
 let g:vimtex_toc_width = 10
-
-let g:vimtex_fold_parts = [
-      \ "appendix",
-      \ "frontmatter",
-      \ "mainmatter",
-      \ "backmatter",
-    \ ]
-
-let g:vimtex_fold_sections = [
-      \ "part",
-      \ "chapter",
-      \ "section",
-      \ "subsection",
-      \ "subsubsection",
-    \ ]
 
 augroup myLaTeXQuickrun
     au!
