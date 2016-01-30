@@ -1,0 +1,73 @@
+# .bashrc
+PATH=/usr/local/bin/:~/scripts:~/HiPIC/dev/scripts/:$PATH
+if [[ `hostname` =~ ^xe.*$  ]]; then
+    # if client is in system A, load vim
+    PATH=~/local/bin:$PATH
+fi
+export LANG=ja_JP.UTF-8
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# define variables
+export LARGE0="/LARGE0/gr20001/b32554/"
+export LARGE1="/LARGE1/gr20001/b32554/"
+export LARGE2="/LARGE2/gr20001/b32554/"
+export LARGE3="/LARGE3/gr20001/b32554/"
+export datadir="/LARGE0/gr20001/b32554/data/"
+export TERM=xterm-256color
+export TMPDIR=/LARGE0/gr20001/b32554/tectmp
+export IDL_STARTUP="~/idl/init.pro"
+
+# User specific aliases and functions
+alias ls="ls -aF --color=auto --show-control-chars"
+alias ll="ls -lh"
+alias ..="cd .."
+alias :q="exit"
+alias ~="cd ~"
+alias gpp="g++ -o"
+alias less="less -R"
+alias lv="lv -c"
+alias tec360="tec360 -mesa &"
+alias diff="diff -y --suppress-common-lines"
+alias grep="grep -n --color=auto"
+alias mv="mv -v"
+alias qg="qgroup"
+alias qc="qcat -s"
+alias qk="qkill"
+alias sysC="module switch lsf/SystemB lsf/SystemC"
+alias sysB="module switch lsf/SystemC lsf/SystemB"
+alias gst="git status"
+alias xruna="xrun -q gr20001a -ug gr20001"
+
+# expand use limit on login node
+ulimit -v 4194304 -t 72000 -s unlimited -m unlimited
+
+# DO NOT EDIT THE FOLLOWING TWO LINES
+#### LPM(/home/b/b32554/lcl)
+source /home/b/b32554/lcl/.bashrc
+
+if [[ `hostname` =~ ^xe-0001.*$ || `hostname` =~ ^ap-0001.*$ ]]; then
+    # if client is not port forward, auto attach tmux sessions.
+    if [ -z "$TMUX" -a -z "$STY" ]; then
+        if type tmux >/dev/null 2>&1; then
+            if tmux has-session && tmux list-sessions | grep -qE '.*]$'; then
+                tmux attach && echo "tmux attached session."
+            else
+                tmux new-session && echo "tmux created new session."
+            fi
+        fi
+    fi
+fi
+
+# write system specific load
+module load git
+if [[ `hostname` =~ ^xe.*$ ]]; then
+    # change default compiler to intel
+    module switch PrgEnv-cray PrgEnv-intel
+else
+    module load tecplot360/2013R1
+    module load idl
+fi
+
