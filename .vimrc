@@ -76,7 +76,7 @@ set noswapfile
 set backupdir=$HOME/.vim/backup
 set directory=$HOME/.vim/backup
 set undodir=$HOME/.vim/undo
-set browsedir=buffer 
+set browsedir=buffer
 set clipboard+=unnamed,autoselect
 set expandtab
 set hidden
@@ -456,4 +456,10 @@ autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
 " set shiftwidth by FileType
 autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
+" auto highlighting Traling Spaces
+augroup HighlightTrailingSpaces
+    autocmd!
+    autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
+    autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
+augroup END
 colorscheme wombat
