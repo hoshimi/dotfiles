@@ -349,6 +349,7 @@ inoremap <C-k> <Up>
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
+inoremap <C-a> <ESC>A
 inoremap <silent> <C-x> <BS>
 inoremap <silent> <C-d> <Del>
 inoremap <C-z> <ESC><Undo>
@@ -361,7 +362,7 @@ set wildmode=full
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
-" --unite.vim--
+" unite.vim
 " Prefix
 nnoremap [unite] <Nop>
 nmap <Leader>f [unite]
@@ -372,6 +373,13 @@ nnoremap <silent> [unite]m :<C-u>Unite<Space>-vertical -winwidth=30 mark<CR>
 nnoremap <silent> [unite]o :<C-u>Unite<Space>-vertical -winwidth=30 -no-quit outline<CR>
 nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=file buffer bookmark file<CR>
 
+" vimshell
+let g:vimshell_interactive_update_time = 10
+let g:vimshell_prompt = $USERNAME."% "
+nnoremap <silent> vs :VimShell<CR>
+nnoremap <silent> vsc :VimShellCreate<CR>
+nnoremap <silent> vp :VimShellPop<CR>
+
 " -- vim signature --
 let g:SignatureMarkTextHLDynamic = 1
 
@@ -381,7 +389,6 @@ let g:vimtex_latexmk_continuous = 1
 let g:vimtex_latexmk_background = 1
 let g:vimtex_view_method = 'general'
 
-" ?R???p?C???I??????G???[??m?I?t
 let g:vimtex_latexmk_callback = 0
 
 if has('win32')
