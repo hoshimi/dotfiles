@@ -39,6 +39,7 @@ endif
 
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
+NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/unite-outline'
@@ -95,6 +96,7 @@ set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
 set backspace=indent,eol,start
+set mouse=""
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
 
@@ -281,11 +283,18 @@ let g:quickrun_config = {
         \ "outputter/buffer/name" : "quickrun",
         \ "outputter/buffer/split" : "vertical",
     \ },
+    \ "d_unittest" : {
+        \ "command" : "rdmd",
+        \ "cmdopt" : "-unittest -main -g",
     \}
+\}
 
 let mapleader = ","
 let maplocalleader = ","
 noremap \ ,
+
+" D unittest
+nnoremap <buffer> <Leader>R :<C-u>QuickRun d_unittest<CR>
 
 nmap sq :bd<CR>
 nmap <C-h> <C-w>h
@@ -297,9 +306,6 @@ noremap <F5> :e!<CR>
 noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
-"imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
-"smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
-"noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
 " add single space
 noremap <Leader><Space> i<Space><ESC>
@@ -325,10 +331,16 @@ noremap Y y$
 inoremap <silent> <ESC> <ESC>
 inoremap <silent> <C-[> <ESC>
 
-" braces hokan
+" braces completion
 inoremap {<CR> {}<Left><CR><ESC><S-o>
 inoremap [<CR> []<Left><CR><ESC><S-o>
 inoremap (<CR> ()<Left><CR><ESC><S-o>
+inoremap {<SPACE> {  }<LEFT><LEFT>
+inoremap [<SPACE> [  ]<LEFT><LEFT>
+inoremap (<SPACE> (  )<LEFT><LEFT>
+inoremap < <><LEFT>
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
 
 " undo splitting
 inoremap <CR> <C-g>u<CR>
