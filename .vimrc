@@ -38,6 +38,7 @@ endif
 
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
+NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/unite-outline'
@@ -94,6 +95,7 @@ set nowrapscan
 set encoding=utf-8
 set fileencodings=utf-8
 set backspace=indent,eol,start
+set mouse=""
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
 
@@ -156,7 +158,7 @@ if s:meet_neocomplete_requirements()
     autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
     autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
     autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
     " Enable heavy omni completion.
@@ -279,11 +281,18 @@ let g:quickrun_config = {
         \ "outputter/buffer/name" : "quickrun",
         \ "outputter/buffer/split" : "vertical",
     \ },
+    \ "d_unittest" : {
+        \ "command" : "rdmd",
+        \ "cmdopt" : "-unittest -main -g",
     \}
+\}
 
 let mapleader = ","
 let maplocalleader = ","
 noremap \ ,
+
+" D unittest
+nnoremap <buffer> <Leader>R :<C-u>QuickRun d_unittest<CR>
 
 nmap sq :bd<CR>
 nmap <C-h> <C-w>h
@@ -295,9 +304,6 @@ noremap <F5> :e!<CR>
 noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
-"imap <C-Tab> <Plug>(neocomplcache_snippets_expand)
-"smap <C-Tab> <Plug>(neocomplcache_snippets_expand)
-"noremap esnip :<C-u>NeoComplCacheEditSnippets<CR>
 
 " add single space
 noremap <Leader><Space> i<Space><ESC>
@@ -323,10 +329,16 @@ noremap Y y$
 inoremap <silent> <ESC> <ESC>
 inoremap <silent> <C-[> <ESC>
 
-" braces hokan
+" braces completion
 inoremap {<CR> {}<Left><CR><ESC><S-o>
 inoremap [<CR> []<Left><CR><ESC><S-o>
 inoremap (<CR> ()<Left><CR><ESC><S-o>
+inoremap {<SPACE> {  }<LEFT><LEFT>
+inoremap [<SPACE> [  ]<LEFT><LEFT>
+inoremap (<SPACE> (  )<LEFT><LEFT>
+inoremap < <><LEFT>
+inoremap " ""<LEFT>
+inoremap ' ''<LEFT>
 
 " undo splitting
 inoremap <CR> <C-g>u<CR>
@@ -336,6 +348,7 @@ inoremap <C-k> <Up>
 inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
+inoremap <C-a> <ESC>A
 inoremap <silent> <C-x> <BS>
 inoremap <silent> <C-d> <Del>
 inoremap <C-z> <ESC><Undo>
@@ -348,7 +361,7 @@ set wildmode=full
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
-" --unite.vim--
+" unite.vim
 " Prefix
 nnoremap [unite] <Nop>
 nmap <Leader>f [unite]
@@ -359,6 +372,13 @@ nnoremap <silent> [unite]m :<C-u>Unite<Space>-vertical -winwidth=30 mark<CR>
 nnoremap <silent> [unite]o :<C-u>Unite<Space>-vertical -winwidth=30 -no-quit outline<CR>
 nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=file buffer bookmark file<CR>
 
+" vimshell
+let g:vimshell_interactive_update_time = 10
+let g:vimshell_prompt = $USERNAME."% "
+nnoremap <silent> vs :VimShell<CR>
+nnoremap <silent> vsc :VimShellCreate<CR>
+nnoremap <silent> vp :VimShellPop<CR>
+
 " -- vim signature --
 let g:SignatureMarkTextHLDynamic = 1
 
@@ -368,7 +388,6 @@ let g:vimtex_latexmk_continuous = 1
 let g:vimtex_latexmk_background = 1
 let g:vimtex_view_method = 'general'
 
-" ?R???p?C???I??????G???[??m?I?t
 let g:vimtex_latexmk_callback = 0
 
 if has('win32')
