@@ -3,11 +3,7 @@
 " An example for a Japanese version gvimrc file.
 " 日本語版のデフォルトGUI設定ファイル(gvimrc) - Vim7用試作
 "
-<<<<<<< HEAD
-" Last Change: 19-Feb-2016.
-=======
 " Last Change: 03-Mar-2016.
->>>>>>> 993ad326c11cd759bc4c2781bf4434bb95838c22
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
