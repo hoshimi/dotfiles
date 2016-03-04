@@ -3,7 +3,7 @@
 " An example for a Japanese version gvimrc file.
 " 日本語版のデフォルトGUI設定ファイル(gvimrc) - Vim7用試作
 "
-" Last Change: 02-Dec-2011.
+" Last Change: 19-Feb-2016.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -69,8 +69,8 @@ colorscheme desert
 "
 if has('win32')
   " Windows用
-  set guifont=Inconsolata:h12,
-  set guifontwide=MS_Gothic:h12
+  set guifont=MigMix_1M:h12,
+  set guifontwide=MigMix_1M:h12
   
   set encoding=utf-8
   " 行間隔の設定
