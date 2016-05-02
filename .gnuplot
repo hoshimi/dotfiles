@@ -1,3 +1,5 @@
+#!/gnuplot
+
 set macros
 set grid
 if (strstrt(system("ver"), "Windows") != 0) \

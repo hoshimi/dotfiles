@@ -9,12 +9,18 @@ $pdf_mode       = 3;
 # prevent latexmk from removing PDF after typeset,
 #$pvc_view_file_via_temporary = 0;
 
-if (-f '/Applications/Preview.app') {
-    $pdf_previewer = 'open -a /Applications/Preview.app';
-} elsif (-f 'C:/Program Files/SumatraPDF/SumatraPDF.exe') {
-    $pdf_previewer = '"C:/Program Files/SumatraPDF/SumatraPDF.exe" -reuse-instance';
-} elsif (-f 'C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe') {
-    $pdf_previewer = '"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe" -reuse-instance';
+if($^O eq 'MSWin32'){
+    if (-f 'C:/Program Files/SumatraPDF/SumatraPDF.exe') {
+        $pdf_previewer = '"C:/Program Files/SumatraPDF/SumatraPDF.exe" -reuse-instance';
+    } elsif (-f 'C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe') {
+        $pdf_previewer = '"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe" -reuse-instance';
+    } else {
+        $pdf_previewer  = '"C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AcroRd32.exe" /n %S';
+    }
 } else {
-    $pdf_previewer  = '"C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AcroRd32.exe" /n %S';
+    if (-f '/Applications/Skim.app') {
+        $pdf_previewer = "open -a /Applications/Skim.app";
+    } else {
+        $pdf_previewer = 'open -a /Applications/Preview.app';
+    }
 }
