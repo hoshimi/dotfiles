@@ -384,7 +384,6 @@ let g:vimtex_toc_width = 10
 augroup myLaTeXQuickrun
     au!
     au BufEnter *.tex call <SID>SetLaTeXMainSource()
-    au BufEnter *.tex nnoremap <Leader>v :call <SID>TexPdfView() <CR>
     if has('gui_running')
         au BufEnter *.tex inoremap <silent> $  <C-g>u$$<ESC>:call IMState("Leave")<CR>i
     endif
@@ -409,19 +408,6 @@ function! s:SetLaTeXMainSource()
     else
         let g:latexmain_pdf_name = fnamemodify(latexmain, ':.:r').'.pdf'
     endif
-endfunction
-
-function! s:TexPdfView()
-    if has('win32')
-        let g:TexPdfViewCommand = '!start '.
-                    \             '"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe" -reuse-instance '.
-                    \             g:latexmain_pdf_name
-    elseif has('unix')
-        let g:TexPdfViewCommand = '! '.
-                    \             'open '.
-                    \             g:latexmain_pdf_name
-    endif
-    execute g:TexPdfViewCommand
 endfunction
 
 " --syntax files--
