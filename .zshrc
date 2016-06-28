@@ -135,6 +135,5 @@ ls_abbrev() {
 function load_rc { [ -f ~/.zshrc_$1 ] && source ~/.zshrc_$1 }
 
 load_rc percol_select_history
-load_rc "local"
+load_rc local
 # load_rc orig
-# [ -f ~/.zshrc_local ] && source ~/.zshrc_local

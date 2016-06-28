@@ -34,6 +34,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
 NeoBundle 'vim_colors'
+NeoBundle 'cohama/agit.vim'
 NeoBundle 'tacroe/unite-mark'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'tomtom/tcomment_vim'
@@ -53,6 +54,7 @@ NeoBundle 'Shougo/vimproc.vim', {
         \   'unix': 'gmake',
     \},
 \}
+NeoBundle 'open-browser.vim'
 
 call neobundle#end()
 
@@ -60,6 +62,7 @@ filetype plugin indent on " required!
 NeoBundleCheck
 syntax on
 set autoindent
+" set shellslash
 set noswapfile
 set backupdir=$HOME/.vim/backup
 set directory=$HOME/.vim/backup
@@ -84,6 +87,7 @@ set encoding=utf-8
 set fileencodings=utf-8
 set backspace=indent,eol,start
 set mouse=""
+set grepprg=grep\ -nH\ $*
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
 
@@ -243,6 +247,11 @@ noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
 
+" open-browser
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx :OpenBrowser http://wordnet.i.cmaas.net/<C-r><C-w><CR>
+" vmap gx <Plug>(openbrowser-smart-search)
+
 " add single space
 noremap <Leader><Space> i<Space><ESC>
 
@@ -274,9 +283,6 @@ inoremap (<CR> ()<Left><CR><ESC><S-o>
 inoremap {<SPACE> {  }<LEFT><LEFT>
 inoremap [<SPACE> [  ]<LEFT><LEFT>
 inoremap (<SPACE> (  )<LEFT><LEFT>
-inoremap < <><LEFT>
-inoremap " ""<LEFT>
-inoremap ' ''<LEFT>
 
 " undo splitting
 inoremap <CR> <C-g>u<CR>
@@ -290,6 +296,10 @@ inoremap <C-a> <ESC>A
 inoremap <silent> <C-x> <BS>
 inoremap <silent> <C-d> <Del>
 inoremap <C-z> <ESC><Undo>
+
+" always search with \v prefix
+nnoremap / /\v
+nnoremap ? ?\v
 
 " Tab zsh
 set wildmenu
@@ -325,7 +335,6 @@ let g:vimtex_latexmk_options = '-pdfdvi'
 let g:vimtex_latexmk_continuous = 1
 let g:vimtex_latexmk_background = 1
 let g:vimtex_view_method = 'general'
-
 let g:vimtex_latexmk_callback = 0
 
 if has('win32')
@@ -334,7 +343,31 @@ if has('win32')
     let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 elseif has('unix')
     if system('uname')=~'Darwin'
-        let g:vimtex_view_general_viewer = 'open'
+        " let g:vimtex_view_general_viewer = 'open -a /Applications/Preview.app'
+        " let g:vimtex_view_general_viewer = 'open -a /Applications/Skim.app'
+        " let g:vimtex_view_general_viewer = 'Skim'
+        let g:vimtex_view_general_viewer
+                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+        let g:vimtex_view_general_options = '-r @line @pdf @tex'
+
+	let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+
+	function! UpdateSkim(status)
+	    if !a:status | return | endif
+
+	    let l:out = b:vimtex.out()
+	    let l:cmd = [g:vimtex_view_general_viewer, '-r']
+	    if !empty(system('pgrep Skim'))
+		call extend(l:cmd, ['-g'])
+	    endif
+	    if has('nvim')
+		call jobstart(l:cmd + [line('.'), l:out])
+	    elseif has('job')
+		call job_start(l:cmd + [line('.'), l:out])
+	    else
+		call system(join(l:cmd + [line('.'), shellescape(l:out)], ' '))
+	    endif
+	endfunction
     else
         let g:vimtex_view_general_viewer = 'open'
     endif
@@ -351,7 +384,6 @@ let g:vimtex_toc_width = 10
 augroup myLaTeXQuickrun
     au!
     au BufEnter *.tex call <SID>SetLaTeXMainSource()
-    au BufEnter *.tex nnoremap <Leader>v :call <SID>TexPdfView() <CR>
     if has('gui_running')
         au BufEnter *.tex inoremap <silent> $  <C-g>u$$<ESC>:call IMState("Leave")<CR>i
     endif
@@ -376,19 +408,6 @@ function! s:SetLaTeXMainSource()
     else
         let g:latexmain_pdf_name = fnamemodify(latexmain, ':.:r').'.pdf'
     endif
-endfunction
-
-function! s:TexPdfView()
-    if has('win32')
-        let g:TexPdfViewCommand = '!start '.
-                    \             '"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe" -reuse-instance '.
-                    \             g:latexmain_pdf_name
-    elseif has('unix')
-        let g:TexPdfViewCommand = '! '.
-                    \             'open '.
-                    \             g:latexmain_pdf_name
-    endif
-    execute g:TexPdfViewCommand
 endfunction
 
 " --syntax files--
