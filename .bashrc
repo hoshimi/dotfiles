@@ -13,8 +13,6 @@ alias :q='exit'
 alias diff='diff -y --suppress-common-lines'
 alias grep='grep -n --color=auto'
 alias gst='git status'
-alias synchipic='rsync -av kdk-a:/LARGE0/gr20001/b32554/syncdata/ /cygdrive/f/Dropbox/Lab/docter/data/'
-alias hipicdir='cd /cygdrive/f/Dropbox/Lab/docter/data'
 
 # load local settings 
 if [ -f ~/.bashrc_local ]; then
