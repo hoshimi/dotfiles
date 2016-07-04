@@ -5,11 +5,7 @@ if has('win32')
 endif
 
 " -- neobundle --
-if hostname !~ '^xe.*$' && hostname !~ '^ap.*$'
-    let g:neobundle_default_git_protocol='https'
-else
-    let g:neobundle_default_git_protocol='git'
-endif
+let g:neobundle_default_git_protocol='https'
 filetype off
 
 if has('vim_starting')
