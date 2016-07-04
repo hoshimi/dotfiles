@@ -87,7 +87,6 @@ set encoding=utf-8
 set fileencodings=utf-8
 set backspace=indent,eol,start
 set mouse=""
-set grepprg=grep\ -nH\ $*
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
 
@@ -105,9 +104,10 @@ augroup END
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#auto_completion_start_length = 3
+" let g:neocomplete#auto_completion_start_length = 3
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#skip_auto_completion_time = 1000.0
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 let g:neocomplete#sources#dictionary#dictionaries = {
@@ -125,15 +125,15 @@ let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   " For no inserting <CR> key.
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
+" inoremap <expr><C-y>  neocomplete#close_popup()
+" inoremap <expr><C-e>  neocomplete#cancel_popup()
 
 " Enable omni completion.
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -141,6 +141,7 @@ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal completeopt-=preview omnifunc=jedi#completions
+autocmd FileType tex call neocomplete#custom#source('buffer', 'disabled', 1)
 
 " jedi.vim
 let g:jedi#completions_enabled = 0
@@ -158,10 +159,17 @@ endif
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.tex = "\\cite{\s*[0-9A-Za-z_:]*\|\\ref{\s*[0-9A-Za-z_:]*"
-let g:neocomplete#keyword_patterns.tex     = '[a-zA-ZæÆøØåÅ][0-9a-zA-ZæÆøØåÅ]\+'
 let g:neocomplete#sources#omni#input_patterns.tex =
-      \ '\v\\\a*(ref|cite)\a*([^]]*\])?\{([^}]*,)*[^}]*'
+        \ '\v\\%('
+        \ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
+        \ . '|hyperref\s*\[[^]]*'
+        \ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|%(include%(only)?|input)\s*\{[^}]*'
+        \ . '|\a*(gls|Gls|GLS)(pl)?\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|includepdf%(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . '|includestandalone%(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . ')'
 
 " neosnippet
 imap <C-b> <Plug>(neosnippet_expand_or_jump)
@@ -339,13 +347,10 @@ let g:vimtex_latexmk_callback = 0
 
 if has('win32')
     let g:vimtex_view_general_viewer = 'SumatraPDF'
-    let g:vimtex_view_general_options = '-forward-search @tex @line @pdf'
+    let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
     let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 elseif has('unix')
     if system('uname')=~'Darwin'
-        " let g:vimtex_view_general_viewer = 'open -a /Applications/Preview.app'
-        " let g:vimtex_view_general_viewer = 'open -a /Applications/Skim.app'
-        " let g:vimtex_view_general_viewer = 'Skim'
         let g:vimtex_view_general_viewer
                   \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
         let g:vimtex_view_general_options = '-r @line @pdf @tex'
@@ -382,8 +387,6 @@ let g:vimtex_toc_split_pos = "topleft"
 let g:vimtex_toc_width = 10
 
 augroup myLaTeXQuickrun
-    au!
-    au BufEnter *.tex call <SID>SetLaTeXMainSource()
     if has('gui_running')
         au BufEnter *.tex inoremap <silent> $  <C-g>u$$<ESC>:call IMState("Leave")<CR>i
     endif
@@ -400,18 +403,6 @@ function! s:TeXDollarFunc()
 
 endfunction
 
-function! s:SetLaTeXMainSource()
-    let currentFileDirectory = expand('%:p:h').'/'
-    let latexmain = glob(currentFileDirectory.'*.latexmain')
-    if latexmain == ''
-        let g:latexmain_pdf_name = expand("%:.:r").'.pdf'
-    else
-        let g:latexmain_pdf_name = fnamemodify(latexmain, ':.:r').'.pdf'
-    endif
-endfunction
-
-" --syntax files--
-autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
 " set shiftwidth by FileType
 autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
