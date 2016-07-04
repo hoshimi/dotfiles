@@ -39,6 +39,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'lervag/vimtex'
+NeoBundle 'Konfekt/FastFold'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Shougo/vimproc.vim', {
@@ -100,12 +101,8 @@ augroup END
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-" let g:neocomplete#auto_completion_start_length = 3
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-let g:neocomplete#skip_auto_completion_time = 1000.0
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
 let g:neocomplete#sources#dictionary#dictionaries = {
             \ 'default' : '',
             \ 'vimshell' : $HOME.'/.vimshell_hist',
@@ -116,20 +113,15 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  " For no inserting <CR> key.
   return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
 endfunction
-" <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><C-y>  neocomplete#close_popup()
-" inoremap <expr><C-e>  neocomplete#cancel_popup()
 
 " Enable omni completion.
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -137,7 +129,6 @@ autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal completeopt-=preview omnifunc=jedi#completions
-autocmd FileType tex call neocomplete#custom#source('buffer', 'disabled', 1)
 
 " jedi.vim
 let g:jedi#completions_enabled = 0
@@ -334,12 +325,14 @@ nnoremap <silent> vp :VimShellPop<CR>
 " -- vim signature --
 let g:SignatureMarkTextHLDynamic = 1
 
+let g:vimtex_complete_close_braces = 1
 let g:vimtex_latexmk_enabled = 1
 let g:vimtex_latexmk_options = '-pdfdvi'
 let g:vimtex_latexmk_continuous = 1
 let g:vimtex_latexmk_background = 1
 let g:vimtex_view_method = 'general'
 let g:vimtex_latexmk_callback = 0
+let g:vimtex_quickfix_mode = 2 " open quickfix window but not be active
 
 if has('win32')
     let g:vimtex_view_general_viewer = 'SumatraPDF'
