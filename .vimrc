@@ -251,8 +251,8 @@ nmap gx :OpenBrowser http://wordnet.i.cmaas.net/<C-r><C-w><CR>
 noremap <Leader><Space> i<Space><ESC>
 
 " caw
-nmap <Leader>c <Plug>(caw:i:toggle)
-vmap <Leader>c <Plug>(caw:i:toggle)
+nmap <Leader>c <Plug>(caw:hatpos:toggle)
+vmap <Leader>c <Plug>(caw:hatpos:toggle)
 
 " move on display lines
 noremap j gj
