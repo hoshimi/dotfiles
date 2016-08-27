@@ -9,7 +9,7 @@ else \
     print "[.gnuplot loaded.]";\
     set terminal aqua font "Arial, 18";
 
-mu = "{/Symbol m}"
+mu = "'{/Symbol m}'"
 
 hist(x, width) = floor(x/width)*width + width/2
 Re = 1.60217662e-19

@@ -44,10 +44,17 @@ else
     alias ll='ls -alh --color=always'
 fi
 alias pd="popd"
-alias setkuinsproxy='export http_proxy="http://proxy.kuins.net:8080"'
 alias ps2pdf='ps2pdf -dEPSCrop -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode'
 alias gst='git status'
-alias -g dropbox="/cygdrive/f/Dropbox/"
+alias ..="cd .."
+alias :q="exit"
+alias gpp="g++ -o"
+alias less="less -R"
+alias lv="lv -c"
+alias diff="diff -y --suppress-common-lines"
+alias grep="grep -n --color=auto"
+alias mv="mv -v"
+alias gst="git status"
 
 ## history files
 HISTFILE=~/.zsh_history
@@ -129,3 +136,4 @@ function load_rc { [ -f ~/.zshrc_$1 ] && source ~/.zshrc_$1 }
 
 load_rc percol_select_history
 load_rc local
+# load_rc orig

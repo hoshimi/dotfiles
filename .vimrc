@@ -5,11 +5,7 @@ if has('win32')
 endif
 
 " -- neobundle --
-if hostname !~ '^xe.*$' && hostname !~ '^ap.*$'
-    let g:neobundle_default_git_protocol='https'
-else
-    let g:neobundle_default_git_protocol='git'
-endif
+let g:neobundle_default_git_protocol='ssh'
 filetype off
 
 if has('vim_starting')
@@ -43,6 +39,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'bling/vim-bufferline'
 NeoBundle 'lervag/vimtex'
+NeoBundle 'Konfekt/FastFold'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Shougo/vimproc.vim', {
@@ -87,7 +84,6 @@ set encoding=utf-8
 set fileencodings=utf-8
 set backspace=indent,eol,start
 set mouse=""
-set grepprg=grep\ -nH\ $*
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
 
@@ -105,11 +101,8 @@ augroup END
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#auto_completion_start_length = 3
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
 let g:neocomplete#sources#dictionary#dictionaries = {
             \ 'default' : '',
             \ 'vimshell' : $HOME.'/.vimshell_hist',
@@ -120,20 +113,15 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  " For no inserting <CR> key.
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
 endfunction
-" <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
 
 " Enable omni completion.
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -158,10 +146,17 @@ endif
 let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-" let g:neocomplete#sources#omni#input_patterns.tex = "\\cite{\s*[0-9A-Za-z_:]*\|\\ref{\s*[0-9A-Za-z_:]*"
-let g:neocomplete#keyword_patterns.tex     = '[a-zA-ZæÆøØåÅ][0-9a-zA-ZæÆøØåÅ]\+'
 let g:neocomplete#sources#omni#input_patterns.tex =
-      \ '\v\\\a*(ref|cite)\a*([^]]*\])?\{([^}]*,)*[^}]*'
+        \ '\v\\%('
+        \ . '\a*cite\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|\a*ref%(\s*\{[^}]*|range\s*\{[^,}]*%(}\{)?)'
+        \ . '|hyperref\s*\[[^]]*'
+        \ . '|includegraphics\*?%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|%(include%(only)?|input)\s*\{[^}]*'
+        \ . '|\a*(gls|Gls|GLS)(pl)?\a*%(\s*\[[^]]*\]){0,2}\s*\{[^}]*'
+        \ . '|includepdf%(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . '|includestandalone%(\s*\[[^]]*\])?\s*\{[^}]*'
+        \ . ')'
 
 " neosnippet
 imap <C-b> <Plug>(neosnippet_expand_or_jump)
@@ -330,22 +325,21 @@ nnoremap <silent> vp :VimShellPop<CR>
 " -- vim signature --
 let g:SignatureMarkTextHLDynamic = 1
 
+let g:vimtex_complete_close_braces = 1
 let g:vimtex_latexmk_enabled = 1
 let g:vimtex_latexmk_options = '-pdfdvi'
 let g:vimtex_latexmk_continuous = 1
 let g:vimtex_latexmk_background = 1
 let g:vimtex_view_method = 'general'
 let g:vimtex_latexmk_callback = 0
+let g:vimtex_quickfix_mode = 2 " open quickfix window but not be active
 
 if has('win32')
     let g:vimtex_view_general_viewer = 'SumatraPDF'
-    let g:vimtex_view_general_options = '-forward-search @tex @line @pdf'
+    let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
     let g:vimtex_view_general_options_latexmk = '-reuse-instance'
 elseif has('unix')
     if system('uname')=~'Darwin'
-        " let g:vimtex_view_general_viewer = 'open -a /Applications/Preview.app'
-        " let g:vimtex_view_general_viewer = 'open -a /Applications/Skim.app'
-        " let g:vimtex_view_general_viewer = 'Skim'
         let g:vimtex_view_general_viewer
                   \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
         let g:vimtex_view_general_options = '-r @line @pdf @tex'
@@ -382,8 +376,6 @@ let g:vimtex_toc_split_pos = "topleft"
 let g:vimtex_toc_width = 10
 
 augroup myLaTeXQuickrun
-    au!
-    au BufEnter *.tex call <SID>SetLaTeXMainSource()
     if has('gui_running')
         au BufEnter *.tex inoremap <silent> $  <C-g>u$$<ESC>:call IMState("Leave")<CR>i
     endif
@@ -400,18 +392,6 @@ function! s:TeXDollarFunc()
 
 endfunction
 
-function! s:SetLaTeXMainSource()
-    let currentFileDirectory = expand('%:p:h').'/'
-    let latexmain = glob(currentFileDirectory.'*.latexmain')
-    if latexmain == ''
-        let g:latexmain_pdf_name = expand("%:.:r").'.pdf'
-    else
-        let g:latexmain_pdf_name = fnamemodify(latexmain, ':.:r').'.pdf'
-    endif
-endfunction
-
-" --syntax files--
-autocmd BufNewFile,BufRead *.twig set filetype=htmljinja
 " set shiftwidth by FileType
 autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
