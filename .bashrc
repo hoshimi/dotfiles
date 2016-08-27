@@ -1,7 +1,7 @@
 # Global PATHs
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 
-# terminal 
+# terminal
 export PS1="[\u@\h \W]\\$ "
 
 # aliases
@@ -14,7 +14,7 @@ alias diff='diff -y --suppress-common-lines'
 alias grep='grep -n --color=auto'
 alias gst='git status'
 
-# load local settings 
+# load local settings
 if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local
 fi
