@@ -3,10 +3,12 @@ let hostname = substitute(system('hostname'), '\n', '', '')
 " win32 settings
 if has('win32')
     set runtimepath+=$HOME/.vim/,$HOME/.vim/after
+    let s:dein_repo_dir = expand('$HOME/.vim/dein.vim')
+else
+    let s:dein_repo_dir = expand('~/.vim/dein.vim')
 endif
 
 " dein自体の自動インストール
-let s:dein_repo_dir = expand('~/.vim/dein.vim')
 if !isdirectory(s:dein_repo_dir)
   call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
 endif
@@ -18,8 +20,11 @@ filetype off
 if has('vim_starting')
   if &compatible | set nocompatible | endif
 endif
-
-call dein#begin(expand('~/.vim/dein'))
+if has('win32')
+    call dein#begin(expand('$HOME/.vim/dein'))
+else
+    call dein#begin(expand('~/.vim/dein'))
+endif
 
 call dein#add('tyru/caw.vim.git')
 call dein#add('Shougo/unite.vim')
@@ -308,7 +313,7 @@ cnoremap <C-n> <Down>
 
 " unite.vim
 " Prefix
-let g:unite_enable_start_insert=1
+let g:unite_enable_start_insert=0
 let g:unite_source_history_yank_enable =1
 let g:unite_source_file_mru_limit = 200
 nnoremap [unite] <Nop>
