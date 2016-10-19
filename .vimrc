@@ -1,101 +1,90 @@
 let hostname = substitute(system('hostname'), '\n', '', '')
 
+" win32 settings
 if has('win32')
     set runtimepath+=$HOME/.vim/,$HOME/.vim/after
 endif
 
+" dein自体の自動インストール
+let s:dein_repo_dir = expand('~/.vim/dein.vim')
+if !isdirectory(s:dein_repo_dir)
+  call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
+endif
+let &runtimepath = s:dein_repo_dir .",". &runtimepath
+
 " -- neobundle --
-let g:neobundle_default_git_protocol='ssh'
+" let g:neobundle_default_git_protocol='ssh'
 filetype off
-
 if has('vim_starting')
-  if &compatible
-    set nocompatible
-  endif
-
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  if &compatible | set nocompatible | endif
 endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+call dein#begin(expand('~/.vim/dein'))
 
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler'
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'davidhalter/jedi-vim'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle 'ujihisa/unite-font'
-NeoBundle 'vim_colors'
-NeoBundle 'cohama/agit.vim'
-NeoBundle 'tacroe/unite-mark'
-NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'fuenor/im_control.vim'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tyru/caw.vim.git'
-NeoBundle 'bling/vim-bufferline'
-NeoBundle 'lervag/vimtex'
-NeoBundle 'Konfekt/FastFold'
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'Shougo/vimproc.vim', {
-    \'build': {
-        \   'windows': 'tools\\update-dll-mingw',
-        \   'cygwin': 'make -f make_cygwin.mak',
-        \   'mac': 'make -f make_mac.mak',
-        \   'linux': 'make',
-        \   'unix': 'gmake',
-    \},
-\}
-NeoBundle 'open-browser.vim'
+call dein#add('tyru/caw.vim.git')
+call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/unite-outline')
+call dein#add('Shougo/neomru.vim')
+call dein#add('Shougo/neocomplete.vim')
+call dein#add('Shougo/vimfiler')
+"call dein#add('Shougo/vimshell')
+call dein#add('Shougo/neosnippet')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('tacroe/unite-mark')
+call dein#add('thinca/vim-quickrun')
+"call dein#add('cohama/agit.vim')
+call dein#add('kmnk/vim-unite-giti')
+call dein#add('kshenoy/vim-signature')
+call dein#add('fuenor/im_control.vim')
+call dein#add('tpope/vim-surround')
+call dein#add('davidhalter/jedi-vim')
+call dein#add('open-browser.vim')
+call dein#add('bling/vim-bufferline')
+call dein#add('lervag/vimtex')
+call dein#add('Konfekt/FastFold')
+call dein#add('itchyny/lightline.vim')
+call dein#add('tpope/vim-fugitive')
+" call dein#add('Shougo/vimproc.vim', {
+"     \'build': {
+"         \   'windows': 'tools\\update-dll-mingw',
+"         \   'cygwin': 'make -f make_cygwin.mak',
+"         \   'mac': 'make -f make_mac.mak',
+"         \   'linux': 'make',
+"         \   'unix': 'gmake',
+"     \},
+" \})
 
-call neobundle#end()
-
-filetype plugin indent on " required!
-NeoBundleCheck
-syntax on
-set autoindent
-" set shellslash
-set noswapfile
+call dein#end()
+filetype plugin indent on
+syntax enable
+set autoindent number noswapfile
+set expandtab hidden incsearch number
+set showmatch smartcase smartindent smarttab nowrapscan
+set shiftwidth=4
+set softtabstop=4
+set scrolloff=4
+set textwidth=0
+set whichwrap=b,s,h,l,<,>,[,]
 set backupdir=$HOME/.vim/backup
 set directory=$HOME/.vim/backup
 set undodir=$HOME/.vim/undo
 set browsedir=buffer
 set clipboard+=unnamed,autoselect
-set expandtab
-set hidden
-set incsearch
-set number
-set shiftwidth=4
-set softtabstop=4
-set scrolloff=4
-set showmatch
-set smartcase
-set smartindent
-set smarttab
-set textwidth=0
-set whichwrap=b,s,h,l,<,>,[,]
-set nowrapscan
 set encoding=utf-8
-set fileencodings=utf-8
+set fileencodings=utf-8,sjis,euc-jp,iso-2022-js
+set fileformats=unix,dos,mac
 set backspace=indent,eol,start
 set mouse=""
+
+" fortran settings
 let g:fortran_indent_more=1
 let g:fortran_do_enddo=1
+" set shiftwidth by FileType
+autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " TeX settings
 let g:tex_conceal=''
 let g:tex_flavor='latex'
-
-augroup InsertHook
-autocmd!
-autocmd InsertEnter * highlight StatusLine guifg=#ccdc90 guibg=#2E4340
-autocmd InsertLeave * highlight StatusLine guifg=#2E4340 guibg=#ccdc90
-augroup END
 
 " neocomplete
 let g:acp_enableAtStartup = 0
@@ -130,10 +119,6 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal completeopt-=preview omnifunc=jedi#completions
 
-" jedi.vim
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
-
 if(!exists('g:neocomplete#force_omni_input_patterns'))
     let g:neocomplete#force_omni_input_patterns = {}
 endif
@@ -157,10 +142,6 @@ let g:neocomplete#sources#omni#input_patterns.tex =
         \ . '|includepdf%(\s*\[[^]]*\])?\s*\{[^}]*'
         \ . '|includestandalone%(\s*\[[^]]*\])?\s*\{[^}]*'
         \ . ')'
-
-" neosnippet
-imap <C-b> <Plug>(neosnippet_expand_or_jump)
-smap <C-b> <Plug>(neosnippet_expand_or_jump)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ?  "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
@@ -228,30 +209,32 @@ let mapleader = ","
 let maplocalleader = ","
 noremap \ ,
 
-" D unittest
+" D unittest for quickrun
 nnoremap <buffer> <Leader>R :<C-u>QuickRun d_unittest<CR>
 
+" open-browser
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx :OpenBrowser http://eowpf.alc.co.jp/search?q=<C-r><C-w><CR>
+nmap gxf :OpenBrowser http://eowpf.alc.co.jp/search?q=<C-r>"<CR>
+
+" personal mapping
 nmap sq :bd<CR>
 nmap <C-h> <C-w>h
 nmap <C-l> <C-w>l
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
-nmap ;f <F12>
 noremap <F5> :e!<CR>
 noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
-
-" open-browser
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx :OpenBrowser http://wordnet.i.cmaas.net/<C-r><C-w><CR>
-" vmap gx <Plug>(openbrowser-smart-search)
 
 " add single space
 noremap <Leader><Space> i<Space><ESC>
 
 " caw
 nmap <Leader>c <Plug>(caw:hatpos:toggle)
+nmap <Leader>c <Plug>(caw:hatpos:toggle)
+vmap <Leader>c <Plug>(caw:hatpos:toggle)
 vmap <Leader>c <Plug>(caw:hatpos:toggle)
 
 " move on display lines
@@ -267,6 +250,9 @@ noremap N Nzz
 " equiv yy
 noremap Y y$
 
+" backslash
+noremap! ¥ \
+
 " silent escape
 inoremap <silent> <ESC> <ESC>
 inoremap <silent> <C-[> <ESC>
@@ -275,11 +261,11 @@ inoremap <silent> <C-[> <ESC>
 inoremap {<CR> {}<Left><CR><ESC><S-o>
 inoremap [<CR> []<Left><CR><ESC><S-o>
 inoremap (<CR> ()<Left><CR><ESC><S-o>
-inoremap {<SPACE> {  }<LEFT><LEFT>
-inoremap [<SPACE> [  ]<LEFT><LEFT>
-inoremap (<SPACE> (  )<LEFT><LEFT>
+" inoremap {<SPACE> {  }<LEFT><LEFT>
+" inoremap [<SPACE> [  ]<LEFT><LEFT>
+" inoremap (<SPACE> (  )<LEFT><LEFT>
 
-" undo splitting
+" undo splitting when type enter
 inoremap <CR> <C-g>u<CR>
 
 " mappings in insert mode
@@ -292,28 +278,48 @@ inoremap <silent> <C-x> <BS>
 inoremap <silent> <C-d> <Del>
 inoremap <C-z> <ESC><Undo>
 
+" navigation in command line
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+
+" disable EX-mode
+nnoremap  Q <Nop>
+nnoremap gQ <Nop>
+
+" Increment and decrement
+nnoremap + <C-a>
+nnoremap - <C-x>
+
+" indentation in visual mode
+vnoremap < <gv
+vnoremap > >gv|
+
 " always search with \v prefix
 nnoremap / /\v
 nnoremap ? ?\v
 
 " Tab zsh
-set wildmenu
-set wildmode=full
+set wildmenu wildmode=full
 
-" Ex mode
+" Ex mode cursor move
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 
 " unite.vim
 " Prefix
+let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable =1
+let g:unite_source_file_mru_limit = 200
 nnoremap [unite] <Nop>
-nmap <Leader>f [unite]
-
-nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
-nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
-nnoremap <silent> [unite]m :<C-u>Unite<Space>-vertical -winwidth=30 mark<CR>
-nnoremap <silent> [unite]o :<C-u>Unite<Space>-vertical -winwidth=30 -no-quit outline<CR>
-nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -buffer-name=file buffer bookmark file<CR>
+nmap U [unite]
+nnoremap <silent> [unite]r :<C-u>Unite<Space>register<CR>
+nnoremap <silent> [unite]b :<C-u>Unite<Space>buffer<CR>
+nnoremap <silent> [unite]o :<C-u>Unite<Space>-vertical -winwidth=30 outline<CR>
+nnoremap <silent> [unite]f :<C-u>Unite<Space>file<CR>
+nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
+nnoremap <silent> [unite]y :<C-u>Unite<Space>history/yank<CR>
+nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -winwidth=40 -vertical -buffer-name=file_mru buffer bookmark<CR>
 
 " vimshell
 let g:vimshell_interactive_update_time = 10
@@ -325,6 +331,7 @@ nnoremap <silent> vp :VimShellPop<CR>
 " -- vim signature --
 let g:SignatureMarkTextHLDynamic = 1
 
+" -- vimtex --"
 let g:vimtex_complete_close_braces = 1
 let g:vimtex_latexmk_enabled = 1
 let g:vimtex_latexmk_options = '-pdfdvi'
@@ -371,29 +378,8 @@ endif
 let g:vimtex_fold_enabled = 1
 let g:vimtex_fold_automatic = 0
 let g:vimtex_fold_envs = 1
-
 let g:vimtex_toc_split_pos = "topleft"
 let g:vimtex_toc_width = 10
-
-augroup myLaTeXQuickrun
-    if has('gui_running')
-        au BufEnter *.tex inoremap <silent> $  <C-g>u$$<ESC>:call IMState("Leave")<CR>i
-    endif
-augroup END
-
-function! s:TeXDollarFunc()
-    " ime fixed?
-    let s:cmd = "<Left>"
-    if g:IMState == 2
-        s:cmd += "<C-^>"
-    endif
-
-    return s:cmd
-
-endfunction
-
-" set shiftwidth by FileType
-autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " auto highlighting Traling Spaces
 augroup HighlightTrailingSpaces
@@ -401,4 +387,5 @@ augroup HighlightTrailingSpaces
     autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
     autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
+
 colorscheme wombat
