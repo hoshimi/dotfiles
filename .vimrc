@@ -26,6 +26,7 @@ else
     call dein#begin(expand('~/.vim/dein'))
 endif
 
+call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 call dein#add('tyru/caw.vim.git')
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/unite-outline')
@@ -49,15 +50,6 @@ call dein#add('lervag/vimtex')
 call dein#add('Konfekt/FastFold')
 call dein#add('itchyny/lightline.vim')
 call dein#add('tpope/vim-fugitive')
-" call dein#add('Shougo/vimproc.vim', {
-"     \'build': {
-"         \   'windows': 'tools\\update-dll-mingw',
-"         \   'cygwin': 'make -f make_cygwin.mak',
-"         \   'mac': 'make -f make_mac.mak',
-"         \   'linux': 'make',
-"         \   'unix': 'gmake',
-"     \},
-" \})
 
 call dein#end()
 filetype plugin indent on
