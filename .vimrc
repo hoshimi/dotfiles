@@ -223,6 +223,7 @@ nmap <C-k> <C-w>k
 noremap <F5> :e!<CR>
 noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
+noremap <S-Space> :bprev<CR>
 noremap <ESC><ESC> :nohlsearch<CR>
 
 " add single space
@@ -316,7 +317,7 @@ nnoremap <silent> [unite]o :<C-u>Unite<Space>-vertical -winwidth=30 outline<CR>
 nnoremap <silent> [unite]f :<C-u>Unite<Space>file<CR>
 nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
 nnoremap <silent> [unite]y :<C-u>Unite<Space>history/yank<CR>
-nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -winwidth=40 -vertical -buffer-name=file_mru buffer bookmark<CR>
+nnoremap <silent> [unite]a :<C-u>UniteWithCurrentDir -winwidth=40 -vertical -no-quit -buffer-name=buffer<CR>
 
 " vimshell
 let g:vimshell_interactive_update_time = 10
