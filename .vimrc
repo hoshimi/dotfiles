@@ -216,11 +216,38 @@ nmap gx :OpenBrowser http://eowpf.alc.co.jp/search?q=<C-r><C-w><CR>
 nmap gxf :OpenBrowser http://eowpf.alc.co.jp/search?q=<C-r>"<CR>
 
 " personal mapping
-nmap sq :bd<CR>
-nmap <C-h> <C-w>h
-nmap <C-l> <C-w>l
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
+" tab maps
+nnoremap s <Nop>
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
+nnoremap sh <C-w>h
+nnoremap sJ <C-w>J
+nnoremap sK <C-w>K
+nnoremap sL <C-w>L
+nnoremap sH <C-w>H
+nnoremap sn gt
+nnoremap sp gT
+nnoremap sr <C-w>r
+nnoremap s= <C-w>=
+nnoremap sw <C-w>w
+nnoremap so <C-w>_<C-w>|
+nnoremap sO <C-w>=
+nnoremap sN :<C-u>bn<CR>
+nnoremap sP :<C-u>bp<CR>
+nnoremap st :<C-u>tabnew<CR>
+nnoremap sT :<C-u>Unite tab<CR>
+nnoremap ss :<C-u>sp<CR>
+nnoremap sv :<C-u>vs<CR>
+nnoremap sq :<C-u>bd<CR>
+nnoremap sQ :<C-u>q<CR>
+nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
+nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
+
+" nmap <C-h> <C-w>h
+" nmap <C-l> <C-w>l
+" nmap <C-j> <C-w>j
+" nmap <C-k> <C-w>k
 noremap <F5> :e!<CR>
 noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
