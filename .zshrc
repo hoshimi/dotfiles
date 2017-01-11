@@ -1,4 +1,9 @@
 # zplug
+# Check if zplug is installed
+if [[ ! -d ~/.zplug ]]; then
+    curl -skL zplug.sh/installer | zsh
+fi
+
 source ~/.zplug/init.zsh
 
 zplug 'zsh-users/zsh-completions'
