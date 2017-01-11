@@ -414,4 +414,4 @@ augroup HighlightTrailingSpaces
     autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
 
-colorscheme wombat
+colorscheme peachpuff

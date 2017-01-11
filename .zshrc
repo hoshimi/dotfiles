@@ -1,3 +1,29 @@
+# zplug
+source ~/.zplug/init.zsh
+
+zplug 'zsh-users/zsh-completions'
+zplug 'zsh-users/zsh-autosuggestions'
+zplug 'zsh-users/zsh-syntax-highlighting', defer:2
+zplug 'zsh-users/zsh-history-substring-search'
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+zplug 'b4b4r07/enhancd', use:init.sh
+zplug "mollifier/anyframe"
+
+# pretzo themes
+zplug 'modules/osx', from:prezto, if:"[[ $OSTYPE == *darwin* ]]"
+zplug 'modules/prompt', from:prezto
+zstyle ':prezto:module:prompt' theme 'powerline'
+
+if ! zplug check --verbose; then
+  printf 'Install? [y/N]: '
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+
+zplug load --verbose
+
 ## set env parameters
 export EDITOR=vim
 export LANG=ja_JP.UTF-8
@@ -26,7 +52,6 @@ setopt auto_menu
 setopt list_packed
 setopt list_types
 bindkey "^[[Z" reverse-menu-complete
-zstyle ':complection:*' matcher-list 'm:{a-z}={A-Z}'
 
 ## glob
 unsetopt caseglob
@@ -35,11 +60,9 @@ unsetopt caseglob
 alias -g L='| less'
 alias -g G='| grep'
 if [ "$(uname)" = 'Darwin' ]; then
-    export LSCOLORS=xbfxcxdxbxegedabagacad
     alias ls='ls -aFG'
     alias ll='ls -alhG'
 else
-    # eval `dircolors ~/.colorrc`
     alias ls='ls -aF --color=always'
     alias ll='ls -alh --color=always'
 fi
@@ -62,40 +85,10 @@ HISTSIZE=100000
 SAVEHIST=100000
 setopt hist_ignore_dups
 
-## set colors
-export LSCOLORS=Exfxcxdxbxegedabagacad
-export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
-export ZLS_COLORS=$LS_COLORS
-export CLICOLOR=true
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-## set prompt
-autoload -U colors;
-# colors
-tmp_prompt="%{${fg[cyan]}%}%n%# %{${reset_color}%}"
-tmp_prompt2="%{${fg[cyan]}%}%_> %{${reset_color}%}"
-tmp_rprompt="%{${fg[green]}%}[%~]%{${reset_color}%}"
-tmp_sprompt="%{${fg[yellow]}%}%r is correct? [Yes, No, Abort, Edit]:%{${reset_color}%}"
-
-# rootユーザ時(太字にし、アンダーバーをつける)
-if [ ${UID} -eq 0 ]; then
-    tmp_prompt="%B%U${tmp_prompt}%u%b"
-    tmp_prompt2="%B%U${tmp_prompt2}%u%b"
-    tmp_rprompt="%B%U${tmp_rprompt}%u%b"
-    tmp_sprompt="%B%U${tmp_sprompt}%u%b"
-fi
-
-PROMPT=$tmp_prompt    # 通常のプロンプト
-PROMPT2=$tmp_prompt2  # セカンダリのプロンプト(コマンドが2行以上の時に表示される)
-RPROMPT=$tmp_rprompt  # 右側のプロンプト
-SPROMPT=$tmp_sprompt  # スペル訂正用プロンプト
-
-[ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-      PROMPT="%{${fg[white]}%}${HOST%%.*} ${PROMPT}"
-;
-
-function chpwd() {
+# auto ls
+chpwd() {
     ls_abbrev
 }
 ls_abbrev() {
@@ -134,6 +127,4 @@ ls_abbrev() {
 # Load local settings
 function load_rc { [ -f ~/.zshrc_$1 ] && source ~/.zshrc_$1 }
 
-load_rc percol_select_history
 load_rc local
-# load_rc orig
