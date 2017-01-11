@@ -16,6 +16,7 @@ zplug 'b4b4r07/enhancd', use:init.sh
 zplug "mollifier/anyframe"
 
 # pretzo themes
+zplug "sorin-ionescu/prezto", as:plugin, use:init.zsh, hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto", if:"[[ $OSTYPE != *darwin* ]]"
 zplug 'modules/osx', from:prezto, if:"[[ $OSTYPE == *darwin* ]]"
 zplug 'modules/prompt', from:prezto
 zstyle ':prezto:module:prompt' theme 'powerline'
