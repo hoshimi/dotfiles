@@ -43,7 +43,6 @@ call dein#add('kmnk/vim-unite-giti')
 call dein#add('kshenoy/vim-signature')
 call dein#add('fuenor/im_control.vim')
 call dein#add('tpope/vim-surround')
-call dein#add('davidhalter/jedi-vim')
 call dein#add('open-browser.vim')
 call dein#add('bling/vim-bufferline')
 call dein#add('lervag/vimtex')
@@ -115,12 +114,12 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal completeopt-=preview omnifunc=jedi#completions
+" autocmd FileType python setlocal completeopt-=preview omnifunc=jedi#completions
 
 if(!exists('g:neocomplete#force_omni_input_patterns'))
     let g:neocomplete#force_omni_input_patterns = {}
 endif
-let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
+" let g:neocomplete#force_omni_input_patterns.python = '\h\w*\|[^. \t]\.\w*'
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
