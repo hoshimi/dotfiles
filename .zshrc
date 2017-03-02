@@ -44,6 +44,8 @@ bindkey -v
 bindkey "^P" up-line-or-history
 bindkey "^N" down-line-or-history
 bindkey '^R' history-incremental-search-backward
+bindkey '^L' autosuggest-accept
+bindkey '^H' vi-kill-line
 
 ## set options
 setopt print_eight_bit
