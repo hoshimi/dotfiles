@@ -20,3 +20,7 @@ alias less "less -R"
 alias diff "diff -y --suppress-common-lines"
 alias grep "grep -n --color=auto"
 alias mv "mv -v"
+
+function fish_user_key_bindings
+    bind \cr peco_select_history
+end
