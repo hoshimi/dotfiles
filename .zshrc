@@ -13,12 +13,11 @@ zplug 'zsh-users/zsh-history-substring-search'
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug 'b4b4r07/enhancd', use:init.sh
-zplug "mollifier/anyframe"
 
 # pretzo themes
 zplug "sorin-ionescu/prezto", as:plugin, use:init.zsh, hook-build:"ln -s $ZPLUG_ROOT/repos/sorin-ionescu/prezto ${ZDOTDIR:-$HOME}/.zprezto"
 zstyle ':prezto:load' pmodule 'tmux' 'prompt'
-zstyle ':prezto:module:prompt' theme 'powerline'
+zstyle ':prezto:module:prompt' theme 'steeef'
 
 if [[ $OSTYPE == *darwin* ]]; then
     zplug 'modules/osx', from:prezto
@@ -35,6 +34,7 @@ fi
 zplug load --verbose
 
 ## set env parameters
+export ENHANCD_FILTER=fzy:fzf:peco
 export EDITOR=vim
 export LANG=ja_JP.UTF-8
 export KCODE=u
