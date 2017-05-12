@@ -1,5 +1,5 @@
-# zplug
-# Check if zplug is installed
+## zplug
+# Check zplug installation
 if [[ ! -d ~/.zplug ]]; then
     curl -skL zplug.sh/installer | zsh
 fi
@@ -55,8 +55,8 @@ setopt auto_pushd
 setopt correct
 setopt magic_equal_subst
 setopt equals
-#
-# ## enable complection
+
+## enable complection
 autoload -Uz compinit
 compinit
 setopt autolist
@@ -68,75 +68,19 @@ bindkey "^[[Z" reverse-menu-complete
 ## glob
 unsetopt caseglob
 
-## global aliases
-alias -g L='| less'
-alias -g G='| grep'
-if [ "$(uname)" = 'Darwin' ]; then
-    alias ls='ls -aFG'
-    alias ll='ls -alhG'
-else
-    alias ls='ls -aF --color=always'
-    alias ll='ls -alh --color=always'
-fi
-alias pd="popd"
-alias ps2pdf='ps2pdf -dEPSCrop -dAutoFilterColorImages=false -dColorImageFilter=/FlateEncode'
-alias gst='git status'
-alias ..="cd .."
-alias :q="exit"
-alias gpp="g++ -o"
-alias less="less -R"
-alias lv="lv -c"
-alias diff="diff -y --suppress-common-lines"
-alias grep="grep -n --color=auto"
-alias mv="mv -v"
-alias gst="git status"
-
 ## history files
-HISTFILE=~/.zsh_history
+HISTFILE=${HOME}/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
-setopt hist_ignore_dups
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_STORE
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-# auto ls
-chpwd() {
-    ls_abbrev
-}
-ls_abbrev() {
-    # -a : Do not ignore entries starting with ..
-    # -C : Force multi-column output.
-    # -F : Append indicator (one of */=>@|) to entries.
-    local cmd_ls='ls'
-    local -a opt_ls
-    opt_ls=('-aCF' '--color=always')
-    case "${OSTYPE}" in
-        freebsd*|darwin*)
-            if type gls > /dev/null 2>&1; then
-                cmd_ls='gls'
-            else
-                # -G : Enable colorized output.
-                opt_ls=('-aCFG')
-            fi
-            ;;
-    esac
-
-    local ls_result
-    ls_result=$(CLICOLOR_FORCE=1 COLUMNS=$COLUMNS command $cmd_ls ${opt_ls[@]} | sed $'/^\e\[[0-9;]*m$/d')
-
-    local ls_lines=$(echo "$ls_result" | wc -l | tr -d ' ')
-
-    if [ $ls_lines -gt 10 ]; then
-        echo "$ls_result" | head -n 5
-        echo '...'
-        echo "$ls_result" | tail -n 5
-        echo "$(command ls -1 -A | wc -l | tr -d ' ') files exist"
-    else
-        echo "$ls_result"
-    fi
-}
-
-# Load local settings
+## Load local setting function
 function load_rc { [ -f ~/.zshrc_$1 ] && source ~/.zshrc_$1 }
 
+load_rc mycommands
 load_rc local

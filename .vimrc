@@ -49,6 +49,8 @@ call dein#add('lervag/vimtex')
 call dein#add('Konfekt/FastFold')
 call dein#add('itchyny/lightline.vim')
 call dein#add('tpope/vim-fugitive')
+call dein#add('rust-lang/rust.vim')
+call dein#add('racer-rust/vim-racer')
 
 call dein#end()
 filetype plugin indent on
@@ -82,6 +84,12 @@ autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
 let g:tex_conceal=''
 let g:tex_flavor='latex'
 
+" Rust settings
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = $HOME.'/.cargo/bin/rustfmt'
+set hidden
+let g:racer_cmd = $HOME.'/.cargo/bin/racer'
+
 " neocomplete
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
@@ -99,14 +107,16 @@ if !exists('g:neocomplete#keyword_patterns')
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
+inoremap <expr><C-g> neocomplete#undo_completion()
+inoremap <expr><C-]> neocomplete#complete_common_string()
+
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
 endfunction
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+
+inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 " Enable omni completion.
@@ -243,10 +253,6 @@ nnoremap sQ :<C-u>q<CR>
 nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
 nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
 
-" nmap <C-h> <C-w>h
-" nmap <C-l> <C-w>l
-" nmap <C-j> <C-w>j
-" nmap <C-k> <C-w>k
 noremap <F5> :e!<CR>
 noremap <Space> :bnext<CR>
 noremap <Tab><Space> :bprev<CR>
@@ -286,9 +292,6 @@ inoremap <silent> <C-[> <ESC>
 inoremap {<CR> {}<Left><CR><ESC><S-o>
 inoremap [<CR> []<Left><CR><ESC><S-o>
 inoremap (<CR> ()<Left><CR><ESC><S-o>
-" inoremap {<SPACE> {  }<LEFT><LEFT>
-" inoremap [<SPACE> [  ]<LEFT><LEFT>
-" inoremap (<SPACE> (  )<LEFT><LEFT>
 
 " undo splitting when type enter
 inoremap <CR> <C-g>u<CR>
