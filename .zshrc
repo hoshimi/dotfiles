@@ -1,7 +1,7 @@
 ## zplug
 # Check zplug installation
 if [[ ! -d ~/.zplug ]]; then
-    curl -skL zplug.sh/installer | zsh
+    curl -sL https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
 
 source ~/.zplug/init.zsh
