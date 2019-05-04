@@ -1,0 +1,49 @@
+[user]
+	name = USERNAME
+	email = USEREMAIL
+[core]
+	editor = vim
+	pager = less -R
+	excludesfile = /Users/USERNAME/.gitignore_global
+	trustctime = false
+        filemode = false
+        autoCRLF = false
+[color]
+	ui = always
+	branch = always
+	diff = always
+	interactive = always
+	status = always
+[alias]
+        lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+        lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	last = log -1 --stat
+	cp = cherry-pick
+	co = checkout
+	cl = clone
+	ci = commit
+	st = status -sb
+	br = branch
+	unstage = reset HEAD --
+        dc = diff --cached
+        wdiff = diff --color-words --ignore-all-space
+        ldiff = difftool -y -t latex
+[push]
+	default = matching
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[credential]
+	helper = cache --timeout=3600
+[merge]
+	tool = vimdiff
+[mergetool]
+	keeptemporaries = false
+	keepbackups = false
+	prompt = false
+        trustexitcode = false
+[difftool.latex]
+        cmd = ldiff "$LOCAL" "$REMOTE" "$MERGED"
