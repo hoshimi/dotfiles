@@ -45,7 +45,6 @@ call dein#add('fuenor/im_control.vim')
 call dein#add('tpope/vim-surround')
 call dein#add('open-browser.vim')
 call dein#add('bling/vim-bufferline')
-call dein#add('lervag/vimtex')
 call dein#add('Konfekt/FastFold')
 call dein#add('itchyny/lightline.vim')
 call dein#add('tpope/vim-fugitive')
@@ -73,16 +72,6 @@ set fileencodings=utf-8,sjis,euc-jp,iso-2022-js
 set fileformats=unix,dos,mac
 set backspace=indent,eol,start
 set mouse=""
-
-" fortran settings
-let g:fortran_indent_more=1
-let g:fortran_do_enddo=1
-" set shiftwidth by FileType
-autocmd! FileType fortran setlocal shiftwidth=2 tabstop=2 softtabstop=2
-
-" TeX settings
-let g:tex_conceal=''
-let g:tex_flavor='latex'
 
 " Rust settings
 let g:rustfmt_autosave = 1
@@ -205,24 +194,12 @@ let g:quickrun_config = {
         \ "hook/time/enable" : 1,
         \ "outputter/buffer/name" : "quickrun",
         \ "outputter/buffer/split" : "vertical",
-    \ },
-    \ "d_unittest" : {
-        \ "command" : "rdmd",
-        \ "cmdopt" : "-unittest -main -g",
-    \}
+    \ }
 \}
 
 let mapleader = ","
 let maplocalleader = ","
 noremap \ ,
-
-" D unittest for quickrun
-nnoremap <buffer> <Leader>R :<C-u>QuickRun d_unittest<CR>
-
-" open-browser
-let g:netrw_nogx = 1 " disable netrw's gx mapping.
-nmap gx :OpenBrowser http://eowpf.alc.co.jp/search?q=<C-r><C-w><CR>
-nmap gxf :OpenBrowser http://eowpf.alc.co.jp/search?q=<C-r>"<CR>
 
 " personal mapping
 " tab maps
@@ -359,56 +336,6 @@ nnoremap <silent> vp :VimShellPop<CR>
 " -- vim signature --
 let g:SignatureMarkTextHLDynamic = 1
 
-" -- vimtex --"
-let g:vimtex_complete_close_braces = 1
-let g:vimtex_latexmk_enabled = 1
-let g:vimtex_latexmk_options = '-pdfdvi'
-let g:vimtex_latexmk_continuous = 1
-let g:vimtex_latexmk_background = 1
-let g:vimtex_view_method = 'general'
-let g:vimtex_latexmk_callback = 0
-let g:vimtex_quickfix_mode = 2 " open quickfix window but not be active
-
-if has('win32')
-    let g:vimtex_view_general_viewer = 'SumatraPDF'
-    let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
-    let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-elseif has('unix')
-    if system('uname')=~'Darwin'
-        let g:vimtex_view_general_viewer
-                  \ = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-        let g:vimtex_view_general_options = '-r @line @pdf @tex'
-
-	let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
-
-	function! UpdateSkim(status)
-	    if !a:status | return | endif
-
-	    let l:out = b:vimtex.out()
-	    let l:cmd = [g:vimtex_view_general_viewer, '-r']
-	    if !empty(system('pgrep Skim'))
-		call extend(l:cmd, ['-g'])
-	    endif
-	    if has('nvim')
-		call jobstart(l:cmd + [line('.'), l:out])
-	    elseif has('job')
-		call job_start(l:cmd + [line('.'), l:out])
-	    else
-		call system(join(l:cmd + [line('.'), shellescape(l:out)], ' '))
-	    endif
-	endfunction
-    else
-        let g:vimtex_view_general_viewer = 'open'
-    endif
-endif
-
-" fold
-let g:vimtex_fold_enabled = 1
-let g:vimtex_fold_automatic = 0
-let g:vimtex_fold_envs = 1
-let g:vimtex_toc_split_pos = "topleft"
-let g:vimtex_toc_width = 10
-
 " auto highlighting Traling Spaces
 augroup HighlightTrailingSpaces
     autocmd!
@@ -416,4 +343,4 @@ augroup HighlightTrailingSpaces
     autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
 
-colorscheme peachpuff
+colorscheme wombat

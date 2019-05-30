@@ -3,5 +3,4 @@
 .unite/
 .vim/bundle/
 .vim/.netrwhist
-.vim/backup
 .tmux/resurrect

@@ -1,5 +1,5 @@
 # Global PATHs
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=/usr/local/go/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # terminal
 export PS1="[\u@\h \W]\\$ "
